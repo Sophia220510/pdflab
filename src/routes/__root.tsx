@@ -11,6 +11,12 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { siteConfig } from "../lib/guide-config";
+
+const metaPixelId = siteConfig.analytics.metaPixelId;
+const metaPixelBootstrap = metaPixelId
+  ? `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',${JSON.stringify(metaPixelId)});fbq('track','PageView');fbq('track','ViewContent',{content_ids:['guia-primeiro-estagio-analises-clinicas'],content_name:'Guia do Primeiro Estágio em Análises Clínicas',content_type:'product',currency:'BRL',value:27});`
+  : "";
 
 function NotFoundComponent() {
   return (
@@ -113,9 +119,21 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="pt-BR">
       <head>
         <HeadContent />
+        {metaPixelBootstrap && <script dangerouslySetInnerHTML={{ __html: metaPixelBootstrap }} />}
       </head>
       <body>
         {children}
+        {metaPixelId && (
+          <noscript>
+            <img
+              height="1"
+              width="1"
+              style={{ display: "none" }}
+              src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`}
+              alt=""
+            />
+          </noscript>
+        )}
         <Scripts />
       </body>
     </html>
