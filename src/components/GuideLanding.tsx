@@ -143,10 +143,14 @@ function CTA({
 }) {
   return (
     <a
-      href={checkoutWithUtm()}
-      onClick={() => {
+      href={siteConfig.checkoutUrl || "#oferta"}
+      onClick={(event) => {
         trackEvent("cta_click", { label });
-        if (siteConfig.checkoutUrl) trackEvent("checkout_start");
+        if (siteConfig.checkoutUrl) {
+          event.preventDefault();
+          trackEvent("checkout_start");
+          window.location.assign(checkoutWithUtm());
+        }
       }}
       className={`cta ${className}`}
     >
@@ -670,13 +674,20 @@ export function GuideLanding() {
                   </li>
                 ))}
               </ul>
+              <div className="offer-addon-note">
+                <Sparkles aria-hidden="true" />
+                <p>
+                  Após escolher o guia, você também poderá adicionar materiais complementares de
+                  revisão por um valor especial.
+                </p>
+              </div>
               <div className="price">
                 <small>Investimento</small>
                 <strong>{siteConfig.price}</strong>
               </div>
               <CTA label="QUERO ACESSAR O GUIA AGORA" />
               <span className="offer-note">
-                <LockKeyhole /> Checkout será habilitado após a definição dos dados reais.
+                <LockKeyhole /> Pagamento processado em ambiente seguro.
               </span>
             </div>
           </div>

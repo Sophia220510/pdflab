@@ -1,6 +1,6 @@
 export const siteConfig = {
-  checkoutUrl: "",
-  price: "Preço a definir",
+  checkoutUrl: "https://pay.kiwify.com.br/B6lYPgn",
+  price: "R$ 27,00",
   originalPrice: "",
   productPdfPreviewImages: [] as string[],
   logoUrl: "/images/santa-helena/logo.svg",
