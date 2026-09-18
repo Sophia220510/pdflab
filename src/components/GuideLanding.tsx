@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
-  AlertTriangle,
   ArrowRight,
+  Award,
   BookOpen,
   Check,
   ChevronDown,
@@ -9,6 +9,7 @@ import {
   Clock3,
   FlaskConical,
   GraduationCap,
+  ExternalLink,
   LockKeyhole,
   Microscope,
   Play,
@@ -92,7 +93,17 @@ const faqs = [
 
 function Logo({ light = false }: { light?: boolean }) {
   if (siteConfig.logoUrl)
-    return <img src={siteConfig.logoUrl} alt="Laboratório Santa Helena" className="logo-image" />;
+    return (
+      <div className={`brand official-brand ${light ? "brand-light" : ""}`}>
+        <span className="official-logo-shell">
+          <img src={siteConfig.logoUrl} alt="" className="logo-image" />
+        </span>
+        <span>
+          <b>Laboratório</b>
+          <strong>Santa Helena</strong>
+        </span>
+      </div>
+    );
   return (
     <div className={`brand ${light ? "brand-light" : ""}`}>
       <span className="brand-mark">SH</span>
@@ -224,6 +235,14 @@ export function GuideLanding() {
             Material educacional desenvolvido com a experiência de um laboratório que atua desde
             1988.
           </p>
+          <a
+            className="official-link"
+            href={siteConfig.links.laboratory}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Site do laboratório <ExternalLink size={14} />
+          </a>
           <CTA label="Quero me preparar" className="cta-mini" />
         </div>
       </header>
@@ -262,6 +281,32 @@ export function GuideLanding() {
             </div>
             <div className="hero-product">
               <ProductMockup />
+              <div className="hero-author-card">
+                <img src={siteConfig.drPauloPhoto} alt="Dr. Paulo Brandão" />
+                <span>
+                  <small>CONTEÚDO COM BASE EM EXPERIÊNCIA REAL</small>
+                  <b>Dr. Paulo Brandão</b>
+                  <em>Responsável técnico • TEAC/SBAC</em>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="container trust-strip" aria-label="Indicadores de confiança">
+            <div>
+              <b>Desde 1988</b>
+              <span>experiência laboratorial</span>
+            </div>
+            <div>
+              <b>5 marcos de formação</b>
+              <span>entre 1984 e 2008</span>
+            </div>
+            <div>
+              <b>Docência em pós-graduação</b>
+              <span>formação de novos profissionais</span>
+            </div>
+            <div>
+              <b>47 páginas</b>
+              <span>preparação objetiva</span>
             </div>
           </div>
           <div className="container video-conversion">
@@ -303,6 +348,24 @@ export function GuideLanding() {
               O guia organiza o que você precisa revisar antes de entrar no laboratório — e mostra
               que responsabilidade também significa reconhecer limites e pedir orientação.
             </p>
+          </div>
+        </section>
+
+        <section className="student-proof">
+          <img
+            src="/images/santa-helena/alunos-pratica.webp"
+            alt="Estudantes em atividade prática supervisionada"
+            loading="lazy"
+          />
+          <div className="student-proof-shade" />
+          <div className="container">
+            <span className="section-label">ANTES DE VESTIR O JALECO</span>
+            <h2>Quanto mais familiar parece o ambiente, mais atenção sobra para aprender.</h2>
+            <p>
+              A proposta do guia é reduzir o ruído do primeiro contato: organizar termos, etapas,
+              riscos e responsabilidades para você acompanhar melhor as orientações do supervisor.
+            </p>
+            <CTA label="QUERO COMEÇAR MINHA PREPARAÇÃO" />
           </div>
         </section>
 
@@ -374,10 +437,11 @@ export function GuideLanding() {
           <div className="container authority-row">
             <div className="authority-media">
               <Media kind="lab" src={siteConfig.laboratoryPhoto} />
+              <span className="photo-caption">Equipe do Laboratório Santa Helena</span>
             </div>
             <div>
               <span className="section-label">LABORATÓRIO SANTA HELENA</span>
-              <h2>Experiência real de laboratório por trás do material</h2>
+              <h2>Não nasceu de teoria solta. Nasceu dentro de um laboratório.</h2>
               <p>
                 O Laboratório Santa Helena atua desde 1988 em Análises Clínicas e Medicina
                 Ocupacional. Décadas de rotina técnica, atendimento, qualidade e contato com
@@ -398,6 +462,14 @@ export function GuideLanding() {
                   <span>Contexto de quem conhece o dia a dia</span>
                 </div>
               </div>
+              <a
+                className="text-link"
+                href={siteConfig.links.laboratory}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Conheça o Laboratório Santa Helena <ExternalLink size={15} />
+              </a>
             </div>
           </div>
         </section>
@@ -406,29 +478,78 @@ export function GuideLanding() {
           <div className="container authority-row reverse">
             <div className="authority-media portrait">
               <Media kind="paulo" src={siteConfig.drPauloPhoto} />
+              <span className="photo-caption">Dr. Paulo Brandão em congresso da área</span>
             </div>
             <div>
-              <span className="section-label">RESPONSABILIDADE TÉCNICA</span>
-              <h2>Conheça o profissional que inspira esta preparação</h2>
+              <span className="section-label">AUTORIDADE QUE VOCÊ PODE VERIFICAR</span>
+              <h2>Uma trajetória construída entre bancada, gestão e sala de aula.</h2>
               <p>
                 Dr. Paulo Brandão é o responsável técnico pelo Laboratório Santa Helena. Biólogo,
-                farmacêutico-bioquímico e especialista em Análises Clínicas pelo TEAC/SBAC,
-                construiu sua trajetória entre a rotina laboratorial, a gestão da qualidade e a
-                formação de estudantes.
+                farmacêutico-bioquímico e professor em cursos de capacitação e pós-graduação,
+                construiu sua trajetória formando profissionais e vivendo a rotina laboratorial.
               </p>
-              <p>
-                Sua experiência também se conecta ao{" "}
-                <b>TEPAC — Programa de Treinamento Especializado Prático em Análises Clínicas</b>,
-                iniciativa voltada ao contato supervisionado com a rotina da área. O guia permanece
-                um material teórico e não substitui essa experiência prática.
-              </p>
-              <div className="review-note">
-                <AlertTriangle />
-                <span>
-                  Área preparada para incluir a informação de revisão ou aprovação técnica após
-                  confirmação formal.
-                </span>
+              <div className="credential-list">
+                <div>
+                  <b>1984</b>
+                  <span>Biólogo — UniAnchieta</span>
+                </div>
+                <div>
+                  <b>1990</b>
+                  <span>Farmacêutico-Bioquímico — USF</span>
+                </div>
+                <div>
+                  <b>1996</b>
+                  <span>Especialista em Microbiologia Clínica e Micologia — UNESP</span>
+                </div>
+                <div>
+                  <b>1998</b>
+                  <span>Especialista em Patologia Clínica — UMC</span>
+                </div>
+                <div>
+                  <b>2008</b>
+                  <span>Título de Especialista em Análises Clínicas — TEAC/SBAC</span>
+                </div>
               </div>
+              <a
+                className="text-link"
+                href={siteConfig.links.drPaulo}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Ver trajetória completa no site oficial <ExternalLink size={15} />
+              </a>
+            </div>
+          </div>
+          <div className="container teaching-proof">
+            <div className="teaching-photo">
+              <img
+                src="/images/santa-helena/dr-paulo-palestra.webp"
+                alt="Dr. Paulo Brandão durante palestra"
+                loading="lazy"
+              />
+            </div>
+            <div>
+              <span className="section-label">DOCÊNCIA E FORMAÇÃO</span>
+              <h3>Conhecimento compartilhado com quem está entrando na profissão.</h3>
+              <p>
+                Dr. Paulo atua como professor e formador em cursos de capacitação e programas de
+                pós-graduação.
+              </p>
+              <ul>
+                <li>
+                  <Award /> Cursos de capacitação e pós-graduação do IPESSP
+                </li>
+                <li>
+                  <Award /> Pós-Graduação da Estácio de Sá — Rio de Janeiro
+                </li>
+                <li>
+                  <Award /> Pós-Graduação da Fundação Educacional de Fernandópolis
+                </li>
+              </ul>
+              <p className="teaching-note">
+                O guia é um material teórico desenvolvido a partir da experiência institucional do
+                Laboratório Santa Helena. Não substitui prática supervisionada.
+              </p>
             </div>
           </div>
         </section>
@@ -561,6 +682,9 @@ export function GuideLanding() {
           </p>
           <div>
             <b>São Paulo — SP</b>
+            <a href={siteConfig.links.laboratory} target="_blank" rel="noreferrer">
+              Site oficial do laboratório
+            </a>
             {siteConfig.supportEmail && (
               <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a>
             )}
@@ -570,6 +694,7 @@ export function GuideLanding() {
           <span>
             © {new Date().getFullYear()} Laboratório Santa Helena. Todos os direitos reservados.
           </span>
+          <span>Laboratório Brandão Análises e Pesquisas Clínicas Ltda.</span>
         </div>
       </footer>
       <div className={`mobile-sticky ${showSticky ? "visible" : ""}`}>

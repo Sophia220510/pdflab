@@ -5,12 +5,19 @@ export const siteConfig = {
   videoUrl: "",
   videoPoster: "",
   productPdfPreviewImages: [] as string[],
-  logoUrl: "",
-  drPauloPhoto: "",
-  laboratoryPhoto: "",
+  logoUrl: "/images/santa-helena/logo.svg",
+  drPauloPhoto: "/images/santa-helena/dr-paulo.webp",
+  laboratoryPhoto: "/images/santa-helena/equipe.webp",
   supportEmail: "",
   legal: { cnpj: "", companyName: "" },
-  links: { privacy: "", terms: "", refund: "", contact: "" },
+  links: {
+    laboratory: "https://laboratoriosantahelena.vercel.app",
+    drPaulo: "https://laboratoriosantahelena.vercel.app/paulo-brandao",
+    privacy: "",
+    terms: "",
+    refund: "",
+    contact: "",
+  },
   analytics: { gaId: "", metaPixelId: "" },
 } as const;
 
