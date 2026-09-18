@@ -222,9 +222,39 @@ export function GuideLanding() {
   useEffect(() => {
     trackEvent("page_view");
     const onScroll = () => setShowSticky(window.scrollY > 760);
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const animated = Array.from(
+      document.querySelectorAll<HTMLElement>(
+        "main > section:not(.hero), .video-conversion, .trust-strip, .chapter-grid article, .credential-list div, .facts div, .faq-list details",
+      ),
+    );
+    let observer: IntersectionObserver | undefined;
+    if (!reduceMotion) {
+      document.documentElement.classList.add("motion-ready");
+      animated.forEach((element, index) => {
+        element.classList.add("reveal-item");
+        element.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 55}ms`);
+      });
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer?.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -45px" },
+      );
+      animated.forEach((element) => observer?.observe(element));
+    }
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      observer?.disconnect();
+      document.documentElement.classList.remove("motion-ready");
+    };
   }, []);
   return (
     <div>
@@ -433,20 +463,27 @@ export function GuideLanding() {
           </div>
         </section>
 
-        <section className="authority section">
+        <section id="formacao-pratica" className="authority section">
           <div className="container authority-row">
             <div className="authority-media">
               <Media kind="lab" src={siteConfig.laboratoryPhoto} />
-              <span className="photo-caption">Equipe do Laboratório Santa Helena</span>
+              <span className="photo-caption">Dr. Paulo Brandão com alunos em formação</span>
             </div>
             <div>
-              <span className="section-label">LABORATÓRIO SANTA HELENA</span>
-              <h2>Não nasceu de teoria solta. Nasceu dentro de um laboratório.</h2>
+              <span className="section-label">FORMAÇÃO QUE VAI ALÉM DO PAPEL</span>
+              <h2>O Laboratório Santa Helena também recebe e forma estudantes.</h2>
               <p>
                 O Laboratório Santa Helena atua desde 1988 em Análises Clínicas e Medicina
                 Ocupacional. Décadas de rotina técnica, atendimento, qualidade e contato com
                 estudantes ajudam a contextualizar este material para quem está prestes a entrar no
                 ambiente laboratorial.
+              </p>
+              <p>
+                A instituição também desenvolve o{" "}
+                <b>TEPAC — Programa de Treinamento Especializado Prático em Análises Clínicas</b>,
+                voltado ao contato supervisionado de estudantes e profissionais com a rotina da
+                área. O guia prepara a base teórica; a vivência prática acontece separadamente, com
+                orientação e supervisão.
               </p>
               <div className="facts">
                 <div>
@@ -454,8 +491,8 @@ export function GuideLanding() {
                   <span>Análises Clínicas e Medicina Ocupacional</span>
                 </div>
                 <div>
-                  <b>Experiência com estudantes</b>
-                  <span>Formação, docência e palestras</span>
+                  <b>Recebe estudantes</b>
+                  <span>Biomedicina, Farmácia e Biologia</span>
                 </div>
                 <div>
                   <b>Rotina real</b>
@@ -464,11 +501,11 @@ export function GuideLanding() {
               </div>
               <a
                 className="text-link"
-                href={siteConfig.links.laboratory}
+                href={siteConfig.links.internship}
                 target="_blank"
                 rel="noreferrer"
               >
-                Conheça o Laboratório Santa Helena <ExternalLink size={15} />
+                Conheça o programa de estágio e formação <ExternalLink size={15} />
               </a>
             </div>
           </div>
