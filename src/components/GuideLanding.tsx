@@ -6,13 +6,13 @@ import {
   Check,
   ChevronDown,
   ClipboardCheck,
-  Clock3,
   FlaskConical,
   GraduationCap,
   ExternalLink,
+  Instagram,
   LockKeyhole,
   Microscope,
-  Play,
+  Quote,
   ShieldCheck,
   Sparkles,
   TestTubes,
@@ -90,6 +90,25 @@ const faqs = [
   ],
   ["Há certificado?", "Não há certificado informado para este material."],
 ];
+
+const instagramReviews = [
+  {
+    handle: "@j•••••••••••••",
+    text: "Lugar igual não se encontra. No Laboratório Santa Helena você aprende de verdade 😍",
+  },
+  {
+    handle: "@v••••••••••••••••••••",
+    text: "Super recomendo! No Laboratório Santa Helena aprendemos de verdade e vivenciamos a rotina de um laboratório de forma clara e organizada. O Dr. Paulo ensina muito bem, é super didático e motivador também...",
+  },
+  {
+    handle: "@e••••••••••••••",
+    text: "Meu primeiro emprego... o lugar que guardo com tanto carinho no meu coração! Parabéns pelo novo canal de comunicação. Que vocês tenham muito mais sucesso!",
+  },
+  {
+    handle: "@v••••••••••••••••••••",
+    text: "Excelente laboratório! Acolhimento ao paciente e resultados precisos. 👏👏👏",
+  },
+] as const;
 
 function Logo({ light = false }: { light?: boolean }) {
   if (siteConfig.logoUrl)
@@ -182,41 +201,6 @@ function Media({ kind, src }: { kind: "lab" | "paulo"; src: string }) {
   );
 }
 
-function VideoCard() {
-  return (
-    <div className="video-wrap">
-      <div className="video-heading">
-        <span>Assista: uma mensagem de 2 minutos do Dr. Paulo Brandão</span>
-        <b>
-          <Clock3 size={15} /> 2 min
-        </b>
-      </div>
-      <div className="video-box">
-        {siteConfig.videoUrl ? (
-          <iframe
-            src={siteConfig.videoUrl}
-            title="Mensagem do Dr. Paulo Brandão"
-            allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
-            allowFullScreen
-          />
-        ) : (
-          <div className="video-empty">
-            <button type="button" aria-label="Vídeo ainda em preparação" disabled>
-              <Play fill="currentColor" />
-            </button>
-            <strong>Vídeo em preparação</strong>
-            <span>A mensagem do Dr. Paulo será publicada aqui em breve.</span>
-          </div>
-        )}
-      </div>
-      <p>
-        Entenda por que este guia foi criado e como ele pode ajudar você a chegar mais preparado ao
-        laboratório.
-      </p>
-    </div>
-  );
-}
-
 export function GuideLanding() {
   const [showSticky, setShowSticky] = useState(false);
   useEffect(() => {
@@ -225,7 +209,7 @@ export function GuideLanding() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const animated = Array.from(
       document.querySelectorAll<HTMLElement>(
-        "main > section:not(.hero), .video-conversion, .trust-strip, .chapter-grid article, .credential-list div, .facts div, .faq-list details",
+        "main > section:not(.hero), .social-proof, .trust-strip, .chapter-grid article, .credential-list div, .facts div, .faq-list details",
       ),
     );
     let observer: IntersectionObserver | undefined;
@@ -339,17 +323,43 @@ export function GuideLanding() {
               <span>preparação objetiva</span>
             </div>
           </div>
-          <div className="container video-conversion">
-            <VideoCard />
-            <div className="video-side">
-              <span className="kicker">PREPARE-SE COM RESPONSABILIDADE</span>
-              <h2>Você não precisa chegar sabendo tudo.</h2>
+          <div id="avaliacoes" className="container social-proof">
+            <div className="social-proof-heading">
+              <div>
+                <span className="section-label">COMENTÁRIOS REAIS</span>
+                <h2>
+                  Confiança construída na prática e compartilhada por quem já passou por aqui.
+                </h2>
+              </div>
               <p>
-                Mas pode chegar entendendo o que vai encontrar, o que observar e quando pedir ajuda.
+                Estes comentários estão presentes em publicações do perfil oficial do Laboratório
+                Santa Helena no Instagram. Fotos e nomes foram censurados para preservar a
+                privacidade das pessoas.
               </p>
-              <CTA />
-              <small>Preço e checkout serão exibidos assim que confirmados.</small>
             </div>
+            <div className="reviews-grid">
+              {instagramReviews.map((review, index) => (
+                <article className={index === 1 ? "review-featured" : ""} key={review.text}>
+                  <div className="review-topline">
+                    <span className={`review-avatar avatar-${index + 1}`} aria-hidden="true" />
+                    <span className="review-handle">{review.handle}</span>
+                    <Instagram aria-label="Comentário do Instagram" />
+                  </div>
+                  <Quote className="review-quote" aria-hidden="true" />
+                  <p>{review.text}</p>
+                  <span className="review-source">Comentário em publicação do laboratório</span>
+                </article>
+              ))}
+            </div>
+            <a
+              className="instagram-link"
+              href={siteConfig.links.instagram}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Instagram /> Ver comentários e publicações no Instagram
+              <ExternalLink size={15} />
+            </a>
           </div>
         </section>
 

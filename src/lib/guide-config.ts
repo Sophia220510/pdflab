@@ -2,8 +2,6 @@ export const siteConfig = {
   checkoutUrl: "",
   price: "Preço a definir",
   originalPrice: "",
-  videoUrl: "",
-  videoPoster: "",
   productPdfPreviewImages: [] as string[],
   logoUrl: "/images/santa-helena/logo.svg",
   drPauloPhoto: "/images/santa-helena/dr-paulo.webp",
@@ -14,6 +12,7 @@ export const siteConfig = {
     laboratory: "https://laboratoriosantahelena.vercel.app",
     drPaulo: "https://laboratoriosantahelena.vercel.app/paulo-brandao",
     internship: "https://laboratoriosantahelena.vercel.app/estagio",
+    instagram: "https://www.instagram.com/laboratoriosantahelena81/",
     privacy: "",
     terms: "",
     refund: "",
@@ -22,15 +21,7 @@ export const siteConfig = {
   analytics: { gaId: "", metaPixelId: "" },
 } as const;
 
-export type AnalyticsEvent =
-  | "page_view"
-  | "video_play"
-  | "video_25"
-  | "video_50"
-  | "video_75"
-  | "video_complete"
-  | "cta_click"
-  | "checkout_start";
+export type AnalyticsEvent = "page_view" | "cta_click" | "checkout_start";
 
 export function trackEvent(event: AnalyticsEvent, data: Record<string, unknown> = {}) {
   if (typeof window !== "undefined")
