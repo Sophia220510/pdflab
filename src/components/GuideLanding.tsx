@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   ArrowRight,
   Award,
@@ -202,10 +202,8 @@ function Media({ kind, src }: { kind: "lab" | "paulo"; src: string }) {
 }
 
 export function GuideLanding() {
-  const [showSticky, setShowSticky] = useState(false);
   useEffect(() => {
     trackEvent("page_view");
-    const onScroll = () => setShowSticky(window.scrollY > 760);
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const animated = Array.from(
       document.querySelectorAll<HTMLElement>(
@@ -232,10 +230,7 @@ export function GuideLanding() {
       );
       animated.forEach((element) => observer?.observe(element));
     }
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      window.removeEventListener("scroll", onScroll);
       observer?.disconnect();
       document.documentElement.classList.remove("motion-ready");
     };
@@ -744,13 +739,13 @@ export function GuideLanding() {
           <span>Laboratório Brandão Análises e Pesquisas Clínicas Ltda.</span>
         </div>
       </footer>
-      <div className={`mobile-sticky ${showSticky ? "visible" : ""}`}>
+      <aside className="checkout-floating" aria-label="Acesso rápido ao guia">
         <div>
           <b>Guia do Primeiro Estágio</b>
           <span>47 páginas • acesso digital</span>
         </div>
-        <CTA label="QUERO ME PREPARAR" />
-      </div>
+        <CTA label="ACESSAR O GUIA" />
+      </aside>
     </div>
   );
 }
