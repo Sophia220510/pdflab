@@ -18,31 +18,14 @@ export const siteConfig = {
     refund: "",
     contact: "",
   },
-  analytics: { gaId: "", metaPixelId: "2009500913098478" },
+  analytics: { gaId: "", metaPixelId: "1124080746655021" },
 } as const;
 
 export type AnalyticsEvent = "page_view" | "cta_click" | "checkout_start";
 
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-    _fbq?: (...args: unknown[]) => void;
-  }
-}
-
 export function trackEvent(event: AnalyticsEvent, data: Record<string, unknown> = {}) {
   if (typeof window !== "undefined") {
     window.dispatchEvent(new CustomEvent("santahelena:analytics", { detail: { event, ...data } }));
-    if (event === "checkout_start" && window.fbq) {
-      window.fbq("track", "InitiateCheckout", {
-        content_ids: ["guia-primeiro-estagio-analises-clinicas"],
-        content_name: "Guia do Primeiro Estágio em Análises Clínicas",
-        content_type: "product",
-        currency: "BRL",
-        num_items: 1,
-        value: 27,
-      });
-    }
   }
 }
 
