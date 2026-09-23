@@ -87,10 +87,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Prepare-se antes do seu primeiro dia no laboratório com o Laboratório Santa Helena.",
+          "Guia digital com 47 páginas para estudantes que vão começar o primeiro estágio em Análises Clínicas.",
       },
       { name: "theme-color", content: "#7f1d2d" },
       { property: "og:type", content: "website" },
+      {
+        property: "og:title",
+        content: "Guia do Primeiro Estágio em Análises Clínicas",
+      },
+      {
+        property: "og:description",
+        content:
+          "Prepare-se para entender o fluxo, os setores e os cuidados essenciais antes do primeiro dia.",
+      },
+      {
+        property: "og:image",
+        content: "https://primeiroestagio.vercel.app/images/guide-preview/p01-capa.jpg",
+      },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
