@@ -2,6 +2,8 @@ export const siteConfig = {
   checkoutUrl: "https://pay.kiwify.com.br/B6lYPgn",
   price: "R$ 27,00",
   originalPrice: "",
+  videoUrl: "/videos/dr-paulo-mensagem-guia.mp4",
+  videoPoster: "/images/santa-helena/dr-paulo-video-poster.jpg",
   productPdfPreviewImages: [
     "/images/guide-preview/p09-tres-fases-do-exame.jpg",
     "/images/guide-preview/p16-checklist-primeiro-dia.jpg",
@@ -27,7 +29,7 @@ export const siteConfig = {
   analytics: { gaId: "", metaPixelId: "1124080746655021" },
 } as const;
 
-export type AnalyticsEvent = "page_view" | "cta_click" | "checkout_start";
+export type AnalyticsEvent = "page_view" | "cta_click" | "checkout_start" | "video_play";
 
 export function trackEvent(event: AnalyticsEvent, data: Record<string, unknown> = {}) {
   if (typeof window !== "undefined") {

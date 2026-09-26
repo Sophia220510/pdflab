@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   BookOpen,
@@ -10,6 +10,7 @@ import {
   LockKeyhole,
   Maximize2,
   Microscope,
+  Play,
   Quote,
   ShieldCheck,
   Sparkles,
@@ -144,6 +145,8 @@ function Brand({ light = false }: { light?: boolean }) {
 
 export function GuideLanding() {
   const [openPreview, setOpenPreview] = useState<(typeof previews)[number] | null>(null);
+  const [videoStarted, setVideoStarted] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     trackEvent("page_view");
@@ -236,6 +239,79 @@ export function GuideLanding() {
             <span>Biossegurança</span>
             <span>Fase pré-analítica</span>
             <span>Plano de 7 dias</span>
+          </div>
+        </section>
+
+        <section className="section video-section" aria-labelledby="video-title">
+          <div className="container video-grid">
+            <div className="video-copy">
+              <span className="section-label">UMA MENSAGEM DO DR. PAULO</span>
+              <h2 id="video-title">Conheça quem está por trás desta preparação.</h2>
+              <p>
+                Dr. Paulo Brandão é o responsável técnico pelo Laboratório Santa Helena e acompanha
+                há décadas a rotina laboratorial e a formação de estudantes. Neste vídeo, ele
+                apresenta a experiência e o cuidado técnico que orientam o material.
+              </p>
+              <ul>
+                <li>
+                  <Check /> Responsável técnico pelo laboratório.
+                </li>
+                <li>
+                  <Check /> Especialista em Análises Clínicas pelo TEAC/SBAC.
+                </li>
+                <li>
+                  <Check /> Experiência com estudantes, docência e rotina real.
+                </li>
+              </ul>
+              <CTA label="QUERO ME PREPARAR POR R$ 27" />
+              <span className="video-note">Vídeo de 1min10s · com legendas</span>
+            </div>
+            <div className="video-frame">
+              <div className="video-media">
+                <video
+                  ref={videoRef}
+                  controls
+                  playsInline
+                  preload="none"
+                  poster={siteConfig.videoPoster}
+                  aria-label="Mensagem do Dr. Paulo Brandão sobre o guia"
+                >
+                  <source src={siteConfig.videoUrl} type="video/mp4" />
+                  Seu navegador não consegue reproduzir este vídeo.
+                </video>
+                {!videoStarted && (
+                  <button
+                    className="video-poster"
+                    type="button"
+                    aria-label="Assistir à mensagem do Dr. Paulo Brandão"
+                    onClick={() => {
+                      setVideoStarted(true);
+                      trackEvent("video_play");
+                      void videoRef.current?.play().catch(() => undefined);
+                    }}
+                  >
+                    <img
+                      src={siteConfig.videoPoster}
+                      alt="Dr. Paulo Brandão no Laboratório Santa Helena"
+                      width="478"
+                      height="850"
+                      loading="lazy"
+                    />
+                    <span className="video-overlay" aria-hidden="true">
+                      <span className="play-button">
+                        <Play />
+                      </span>
+                      <b>Assistir à mensagem</b>
+                      <small>1min10s</small>
+                    </span>
+                  </button>
+                )}
+              </div>
+              <div className="video-signature">
+                <b>Dr. Paulo Brandão</b>
+                <span>Responsável técnico · Laboratório Santa Helena</span>
+              </div>
+            </div>
           </div>
         </section>
 
