@@ -36,7 +36,7 @@ export const siteConfig = {
     refund: "",
     contact: "",
   },
-  analytics: { gaId: "", metaPixelId: "1124080746655021" },
+  analytics: { gaId: "", metaPixelId: "2057720801536799" },
 } as const;
 
 export type AnalyticsEvent = "page_view" | "cta_click" | "checkout_start" | "video_play";
