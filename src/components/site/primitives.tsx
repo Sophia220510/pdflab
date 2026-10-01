@@ -41,7 +41,7 @@ export function Reveal({
   const Component = Tag;
   return (
     <Component
-      ref={(node) => {
+      ref={(node: HTMLElement | null) => {
         ref.current = node;
       }}
       data-visible={visible}

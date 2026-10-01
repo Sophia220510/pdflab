@@ -15,7 +15,7 @@ import { siteConfig } from "../lib/guide-config";
 
 const metaPixelId = siteConfig.analytics.metaPixelId;
 const metaPixelBootstrap = metaPixelId
-  ? `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',${JSON.stringify(metaPixelId)});fbq('track','PageView');fbq('track','ViewContent',{content_ids:['guia-primeiro-estagio-analises-clinicas'],content_name:'Guia do Primeiro Estágio em Análises Clínicas',content_type:'product',currency:'BRL',value:27});`
+  ? `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',${JSON.stringify(metaPixelId)});fbq('track','PageView');fbq('track','ViewContent',${JSON.stringify({ content_ids: [siteConfig.productContentId], content_name: siteConfig.productName, content_type: "product", currency: "BRL", value: siteConfig.productPriceNumber })});`
   : "";
 
 function NotFoundComponent() {
@@ -83,26 +83,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Guia do Primeiro Estágio em Análises Clínicas" },
+      { title: siteConfig.productName },
       {
         name: "description",
-        content:
-          "Guia digital com 47 páginas para estudantes que vão começar o primeiro estágio em Análises Clínicas.",
+        content: siteConfig.productDescription,
       },
       { name: "theme-color", content: "#7f1d2d" },
       { property: "og:type", content: "website" },
       {
         property: "og:title",
-        content: "Guia do Primeiro Estágio em Análises Clínicas",
+        content: siteConfig.productName,
       },
       {
         property: "og:description",
-        content:
-          "Prepare-se para entender o fluxo, os setores e os cuidados essenciais antes do primeiro dia.",
+        content: siteConfig.productDescription,
       },
       {
         property: "og:image",
-        content: "https://primeiroestagio.vercel.app/images/guide-preview/p01-capa.jpg",
+        content: `https://primeiroestagio.vercel.app${siteConfig.coverImage}`,
       },
       { name: "twitter:card", content: "summary_large_image" },
     ],

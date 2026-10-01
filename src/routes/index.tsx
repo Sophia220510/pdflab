@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { GuideLanding } from "@/components/GuideLanding";
+import { siteConfig } from "@/lib/guide-config";
 
-const title = "Guia do Primeiro Estágio em Análises Clínicas | Laboratório Santa Helena";
+const title = `${siteConfig.productName} | Laboratório Santa Helena`;
 const description =
-  "Prepare-se antes do seu primeiro dia no laboratório com uma visão clara da rotina, biossegurança, setores e postura esperada.";
+  "Vai começar ou começou recentemente o estágio em Análises Clínicas? Revise a rotina do laboratório, biossegurança e os principais setores com um guia digital prático.";
 
 export const Route = createFileRoute("/")({
   head: () => ({

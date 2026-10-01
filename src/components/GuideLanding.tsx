@@ -2,10 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   BookOpen,
-  CalendarDays,
   Check,
   ChevronDown,
-  ClipboardCheck,
   ExternalLink,
   Instagram,
   LockKeyhole,
@@ -25,7 +23,7 @@ const previews = [
     title: "As três fases do exame",
     src: "/images/guide-preview/p09-tres-fases-do-exame.jpg",
     helps: "Ajuda a visualizar onde cada etapa do exame acontece.",
-    use: "Use para revisar o fluxo antes de acompanhar as explicações da rotina.",
+    use: "Consulte antes de começar ou enquanto acompanha as explicações da rotina.",
   },
   {
     page: 16,
@@ -39,40 +37,30 @@ const previews = [
     title: "Plano de preparação em 7 dias",
     src: "/images/guide-preview/p42-plano-sete-dias.jpg",
     helps: "Divide a revisão em uma sequência curta e possível de acompanhar.",
-    use: "Use na semana anterior ao estágio para evitar uma revisão sem direção.",
+    use: "Organize a revisão antes de começar ou durante as primeiras semanas.",
   },
 ] as const;
 
 const benefits = [
   {
-    title: "Saiba por onde começar sua revisão",
-    text: "Checklists e um plano de sete dias ajudam a distribuir os assuntos antes do primeiro dia.",
-    icon: CalendarDays,
-  },
-  {
-    title: "Entenda o caminho da amostra",
-    text: "Uma visão inicial das fases do exame facilita acompanhar as explicações da rotina.",
+    title: "Entenda como a rotina se organiza",
+    text: "Veja o caminho da amostra e as fases do exame para acompanhar melhor as explicações.",
     icon: Route,
   },
   {
-    title: "Reconheça a linguagem do laboratório",
-    text: "Glossário e apresentação dos setores ajudam você a se familiarizar com termos recorrentes.",
-    icon: BookOpen,
-  },
-  {
-    title: "Saiba o que observar e perguntar",
-    text: "Orientações de postura ajudam a levar dúvidas mais claras ao supervisor nos primeiros dias.",
-    icon: MessageCircle,
-  },
-  {
-    title: "Revise conceitos essenciais",
-    text: "Conteúdos introdutórios de biossegurança e fase pré-analítica reforçam cuidados importantes.",
+    title: "Revise cuidados essenciais",
+    text: "Retome biossegurança e fase pré-analítica sem confundir teoria com autorização para executar técnicas.",
     icon: ShieldCheck,
   },
   {
-    title: "Confira o que entendeu",
-    text: "Teste de revisão e respostas comentadas ajudam a identificar o que merece ser retomado.",
-    icon: ClipboardCheck,
+    title: "Reconheça termos e setores",
+    text: "Use o glossário e o panorama dos setores para entender melhor o que acontece ao seu redor.",
+    icon: BookOpen,
+  },
+  {
+    title: "Tenha uma consulta organizada",
+    text: "Checklist, plano de sete dias e revisão final ajudam a retomar pontos importantes no início do estágio.",
+    icon: MessageCircle,
   },
 ] as const;
 
@@ -83,30 +71,32 @@ const reviews = [
 
 const faqs = [
   [
-    "Para quem este guia é indicado?",
+    "Serve para quem ainda não começou o estágio?",
+    "Sim. O guia ajuda a organizar o que revisar e o que observar antes do primeiro dia.",
+  ],
+  [
+    "Serve para quem já começou recentemente?",
+    "Sim. Você pode consultar o material nas primeiras semanas para retomar termos, setores e pontos básicos da rotina.",
+  ],
+  [
+    "Para quais estudantes o guia é indicado?",
     "Para estudantes de Biomedicina, Farmácia, Ciências Biológicas e áreas relacionadas que vão iniciar ou começaram recentemente um estágio com contato com Análises Clínicas.",
   ],
   [
-    "Como recebo e acesso o material?",
+    "Como recebo o material?",
     "A entrega é digital após a confirmação do pagamento, conforme informado no checkout. Cadastre um e-mail válido durante a compra para receber as comunicações da plataforma.",
   ],
-  ["Posso ler pelo celular?", "Sim. O PDF pode ser lido no celular, tablet ou computador."],
   [
-    "O guia serve para quem já começou o estágio?",
-    "Sim. Ele também pode ajudar quem começou recentemente e quer organizar a revisão, consultar termos e retomar pontos básicos da rotina.",
+    "O material é digital? Posso ler no celular?",
+    "Sim. É um PDF digital que pode ser lido no celular, tablet ou computador.",
   ],
   [
-    "É curso, treinamento prático ou PDF?",
-    "É um PDF de preparação teórica com 47 páginas. Não é curso, estágio ou treinamento prático e não autoriza a execução de procedimentos. A orientação do supervisor e os POPs do local sempre têm prioridade.",
-  ],
-  ["Há certificado?", "Não. A compra corresponde somente ao guia digital."],
-  [
-    "Como funciona o reembolso?",
-    "A política e o procedimento de reembolso não foram informados nos materiais disponibilizados para esta página. Consulte as condições apresentadas no checkout antes de concluir a compra.",
+    "O guia substitui treinamento ou orientação do laboratório?",
+    "Não. É preparação teórica, não um curso ou estágio prático. Não autoriza procedimentos; a orientação do supervisor e os POPs do local sempre têm prioridade.",
   ],
 ] as const;
 
-type CtaPosition = "hero" | "authority" | "offer" | "floating";
+type CtaPosition = "hero" | "authority" | "offer" | "floating" | "final";
 
 function CTA({
   label,
@@ -117,12 +107,15 @@ function CTA({
   position: CtaPosition;
   className?: string;
 }) {
+  const clickedRef = useRef(false);
   return (
     <a
       className={`cta ${className}`}
       href={siteConfig.checkoutUrl}
       onClick={(event) => {
         event.preventDefault();
+        if (clickedRef.current) return;
+        clickedRef.current = true;
         trackEvent("cta_click", { label, position });
         trackEvent("checkout_start", { position });
         window.location.assign(checkoutWithUtm());
@@ -156,6 +149,7 @@ function Brand({ light = false }: { light?: boolean }) {
 export function GuideLanding() {
   const [openPreview, setOpenPreview] = useState<(typeof previews)[number] | null>(null);
   const [videoStarted, setVideoStarted] = useState(false);
+  const [showFloatingBuy, setShowFloatingBuy] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -163,6 +157,17 @@ export function GuideLanding() {
 
   useEffect(() => {
     trackEvent("page_view");
+  }, []);
+
+  useEffect(() => {
+    const heroCta = document.querySelector(".hero-copy .cta");
+    if (!heroCta) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry) return;
+      setShowFloatingBuy(!entry.isIntersecting && entry.boundingClientRect.bottom < 0);
+    });
+    observer.observe(heroCta);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -186,6 +191,7 @@ export function GuideLanding() {
       if (!focusable.length) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
+      if (!first || !last) return;
       if (event.shiftKey && document.activeElement === first) {
         event.preventDefault();
         last.focus();
@@ -219,42 +225,48 @@ export function GuideLanding() {
         <section className="hero">
           <div className="container hero-grid">
             <div className="hero-copy">
-              <span className="eyebrow">PARA O SEU PRIMEIRO ESTÁGIO EM ANÁLISES CLÍNICAS</span>
-              <h1>Seu primeiro estágio em Análises Clínicas está chegando?</h1>
-              <p className="hero-heading-complement">Saiba o que revisar antes de começar.</p>
+              <span className="eyebrow">PARA QUEM VAI COMEÇAR OU COMEÇOU HÁ POUCO</span>
+              <h1>Começando seu estágio em Análises Clínicas e ainda se sente perdido?</h1>
+              <p className="hero-heading-complement">{siteConfig.productName}</p>
               <p className="hero-lead">
-                Organize sua revisão, entenda o caminho das amostras e saiba o que observar e
-                perguntar nos primeiros dias — com um guia digital para consultar antes e durante o
-                estágio.
+                Uma direção clara para revisar a rotina do laboratório, entender o que acontece ao
+                seu redor e saber o que observar nos primeiros dias e semanas.
               </p>
+              <div className="hero-meta" aria-label="Informações do produto">
+                <span>
+                  PDF digital · {siteConfig.productPages} páginas · edição{" "}
+                  {siteConfig.productEdition}
+                </span>
+                <span>Celular, tablet ou computador</span>
+              </div>
+              <div className="hero-purchase">
+                <strong>{siteConfig.productPrice}</strong>
+                <span>pagamento único</span>
+              </div>
+              <CTA label={siteConfig.ctaLabel} position="hero" />
               <ul className="hero-benefits">
                 <li>
-                  <Check /> Organize o que revisar antes do primeiro dia.
+                  <Check /> Entenda o fluxo e os principais setores do laboratório.
                 </li>
                 <li>
-                  <Check /> Entenda os termos e as etapas da rotina.
+                  <Check /> Revise biossegurança e fase pré-analítica.
                 </li>
                 <li>
-                  <Check /> Leve dúvidas mais claras para o seu supervisor.
+                  <Check /> Saiba o que observar, perguntar e retomar com o supervisor.
                 </li>
               </ul>
-              <div className="hero-meta" aria-label="Informações do produto">
-                <span>PDF digital • 47 páginas</span>
-                <span>R$ 27 • pagamento único</span>
-              </div>
-              <CTA label="QUERO ME PREPARAR PARA O ESTÁGIO" position="hero" />
               <div className="hero-actions-note">
                 <span>
-                  <LockKeyhole /> Acesso digital após a confirmação do pagamento.
+                  <LockKeyhole /> Acesso digital conforme o checkout da Kiwify.
                 </span>
                 <a href="#previas">Ver páginas do guia</a>
               </div>
             </div>
-            <div className="hero-product" aria-label="Capa real do Guia do Primeiro Estágio">
+            <div className="hero-product" aria-label="Capa da edição atual do guia">
               <div className="book-shell">
                 <img
-                  src="/images/guide-preview/p01-capa.jpg"
-                  alt="Capa do Guia do Primeiro Estágio em Análises Clínicas"
+                  src={siteConfig.coverImage}
+                  alt="Capa da edição atual do guia em PDF"
                   width="1340"
                   height="1895"
                 />
@@ -270,27 +282,27 @@ export function GuideLanding() {
         <section className="situations-section" aria-labelledby="situations-title">
           <div className="container situations-wrap">
             <header>
-              <span className="section-label">SE O ESTÁGIO ESTÁ PRÓXIMO</span>
+              <span className="section-label">SE VOCÊ ESTÁ COMEÇANDO ESSA FASE</span>
               <h2 id="situations-title">
-                Você não precisa chegar sabendo tudo. Pode chegar sabendo por onde começar.
+                Antes de começar ou já nos primeiros dias, é normal ter dúvidas.
               </h2>
             </header>
             <div className="situations-grid">
               <p>
-                <span>01</span> O estágio está chegando, mas você ainda não sabe o que revisar.
+                <span>ANTES DE COMEÇAR</span> O estágio está chegando e você não sabe o que revisar.
               </p>
               <p>
-                <span>02</span> Você conhece a teoria, mas ainda não visualiza a rotina do
-                laboratório.
+                <span>PRIMEIROS DIAS</span> Você começou e ainda se perde nos termos, setores e
+                etapas da rotina.
               </p>
               <p>
-                <span>03</span> Você quer entender melhor as orientações e levar dúvidas ao
-                supervisor.
+                <span>TEORIA X PRÁTICA</span> Você estudou a matéria, mas não visualiza como ela
+                aparece no laboratório.
               </p>
             </div>
             <p className="situations-close">
-              O guia reúne uma preparação inicial em uma sequência organizada, para você revisar com
-              mais direção.
+              O guia organiza os pontos essenciais para revisar antes do estágio e consultar nas
+              primeiras semanas.
             </p>
           </div>
         </section>
@@ -349,10 +361,10 @@ export function GuideLanding() {
           <div className="container benefits-layout">
             <header>
               <span className="section-label">O QUE MUDA NA SUA PREPARAÇÃO</span>
-              <h2 id="benefits-title">Conteúdo organizado para ser útil no seu momento.</h2>
+              <h2 id="benefits-title">O que você consegue revisar com o guia.</h2>
               <p>
-                Em vez de procurar assuntos soltos, você encontra uma sequência inicial para
-                revisar, consultar e transformar em perguntas para o supervisor.
+                Uma sequência prática para entender melhor a rotina e levar perguntas mais claras ao
+                supervisor.
               </p>
             </header>
             <div className="benefits-list">
@@ -372,9 +384,9 @@ export function GuideLanding() {
         <section className="section authority-section" aria-labelledby="authority-title">
           <div className="container authority-grid">
             <div className="authority-copy">
-              <span className="section-label">EXPERIÊNCIA APLICADA À REVISÃO</span>
+              <span className="section-label">QUEM ESTÁ POR TRÁS DO MATERIAL</span>
               <h2 id="authority-title">
-                Preparação com revisão de quem conhece a rotina do laboratório.
+                Orientação de quem acompanha estudantes e a rotina laboratorial há décadas.
               </h2>
               <div className="authority-person">
                 <img
@@ -390,14 +402,13 @@ export function GuideLanding() {
                 </div>
               </div>
               <p>
-                Conteúdo revisado pelo Dr. Paulo Brandão, biólogo, farmacêutico-bioquímico e
-                especialista em Análises Clínicas pelo TEAC/SBAC. Sua trajetória inclui rotina
-                laboratorial, docência e contato com estudantes.
+                Dr. Paulo Brandão é biólogo, farmacêutico-bioquímico e especialista em Análises
+                Clínicas pelo TEAC/SBAC. Sua trajetória inclui rotina laboratorial, docência e
+                contato com estudantes.
               </p>
               <p>
                 O Laboratório Santa Helena atua desde 1988 em Análises Clínicas e Medicina
-                Ocupacional. Essa experiência ajuda a contextualizar o que merece atenção antes dos
-                primeiros dias de estágio.
+                Ocupacional. O guia foi desenvolvido a partir dessa experiência institucional.
               </p>
               <div className="authority-links">
                 <a href={siteConfig.links.drPaulo} target="_blank" rel="noreferrer">
@@ -410,10 +421,10 @@ export function GuideLanding() {
                   <Instagram /> Instagram oficial
                 </a>
               </div>
-              <CTA label="QUERO ME PREPARAR PARA O ESTÁGIO" position="authority" />
+              <CTA label={siteConfig.ctaLabel} position="authority" />
             </div>
             <div className="video-column">
-              <p>Assista à mensagem do Dr. Paulo sobre a preparação.</p>
+              <p>Conheça a orientação do Dr. Paulo sobre o guia e o início do estágio.</p>
               <div className="video-frame">
                 <div className="video-media">
                   <video
@@ -487,8 +498,8 @@ export function GuideLanding() {
           <div className="container offer-card">
             <div className="offer-cover">
               <img
-                src="/images/guide-preview/p01-capa.jpg"
-                alt="Capa do Guia do Primeiro Estágio em Análises Clínicas"
+                src={siteConfig.coverImage}
+                alt="Capa da edição atual do guia em PDF"
                 width="1340"
                 height="1895"
                 loading="lazy"
@@ -496,14 +507,15 @@ export function GuideLanding() {
             </div>
             <div className="offer-copy">
               <span className="section-label">PAGAMENTO ÚNICO · ACESSO DIGITAL</span>
-              <h2>Guia do Primeiro Estágio em Análises Clínicas</h2>
+              <h2>{siteConfig.productName}</h2>
               <p>
-                Uma preparação inicial para organizar sua revisão e entender melhor o ambiente
-                laboratorial.
+                Para revisar antes de começar e consultar durante as primeiras semanas no
+                laboratório.
               </p>
               <ul>
                 <li>
-                  <Check /> PDF digital com 47 páginas
+                  <Check /> PDF digital com {siteConfig.productPages} páginas, edição{" "}
+                  {siteConfig.productEdition}
                 </li>
                 <li>
                   <Check /> Checklists e plano de preparação
@@ -513,12 +525,12 @@ export function GuideLanding() {
                 </li>
               </ul>
               <div className="offer-price">
-                <strong>R$ 27</strong>
+                <strong>{siteConfig.productPrice}</strong>
                 <span>Pagamento único.</span>
               </div>
-              <CTA label="QUERO ACESSAR O GUIA" position="offer" />
+              <CTA label={siteConfig.ctaLabel} position="offer" />
               <p className="checkout-note">
-                <LockKeyhole /> Acesso digital após a confirmação do pagamento.
+                <LockKeyhole /> Compra pela Kiwify; entrega digital conforme o checkout.
               </p>
             </div>
           </div>
@@ -543,6 +555,20 @@ export function GuideLanding() {
             </div>
           </div>
         </section>
+
+        <section className="final-section" aria-labelledby="final-title">
+          <div className="container final-inner">
+            <div>
+              <span className="section-label">ANTES OU DURANTE O COMEÇO DO ESTÁGIO</span>
+              <h2 id="final-title">Tenha uma direção para revisar e aprender com supervisão.</h2>
+              <p>
+                PDF digital · {siteConfig.productPages} páginas · {siteConfig.productPrice} em
+                pagamento único
+              </p>
+            </div>
+            <CTA label={siteConfig.ctaLabel} position="final" />
+          </div>
+        </section>
       </main>
 
       <footer className="site-footer">
@@ -559,12 +585,17 @@ export function GuideLanding() {
         </div>
       </footer>
 
-      <aside className="floating-buy" aria-label="Comprar o guia">
+      <aside
+        className={`floating-buy ${showFloatingBuy ? "is-visible" : ""}`}
+        aria-label="Comprar o guia"
+        aria-hidden={!showFloatingBuy}
+        inert={!showFloatingBuy}
+      >
         <span>
-          <b>R$ 27</b>
+          <b>{siteConfig.productPrice}</b>
           <small>pagamento único</small>
         </span>
-        <CTA label="COMPRAR GUIA" position="floating" />
+        <CTA label="ACESSAR O GUIA" position="floating" />
       </aside>
 
       {openPreview && (
