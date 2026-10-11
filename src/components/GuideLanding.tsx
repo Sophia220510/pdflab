@@ -4,6 +4,8 @@ import {
   ArrowRight,
   Check,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   ExternalLink,
   Maximize2,
   Minus,
@@ -106,6 +108,145 @@ const faqs = [
 ] as const;
 
 type CtaPosition = "hero" | "authority" | "offer" | "floating" | "final";
+
+function StudentGallery() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [activePhoto, setActivePhoto] = useState(0);
+  const photos = siteConfig.studentPhotos;
+
+  const goToPhoto = (index: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const next = Math.max(0, Math.min(photos.length - 1, index));
+    const slide = track.children[next] as HTMLElement;
+    track.scrollTo({
+      left: slide.offsetLeft - (track.children[0] as HTMLElement).offsetLeft,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    });
+  };
+
+  const updateActivePhoto = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const start = (track.children[0] as HTMLElement).offsetLeft;
+    let nearest = 0;
+    let distance = Infinity;
+    Array.from(track.children).forEach((child, index) => {
+      const currentDistance = Math.abs(
+        (child as HTMLElement).offsetLeft - start - track.scrollLeft,
+      );
+      if (currentDistance < distance) {
+        distance = currentDistance;
+        nearest = index;
+      }
+    });
+    setActivePhoto(nearest);
+  };
+
+  return (
+    <section className="section students-section" aria-labelledby="students-title">
+      <div className="container">
+        <header className="section-heading">
+          <span className="section-label">QUEM ORIENTA TAMBÉM CONHECE AS DÚVIDAS DO COMEÇO</span>
+          <h2 id="students-title">Ensinar faz parte da minha rotina no laboratório.</h2>
+          <p>
+            Sou responsável técnico pelo Santa Helena e acompanho a rotina laboratorial e a
+            orientação de estudantes. Esse contato me ajuda a reconhecer as dúvidas de quem está
+            começando: o que observar, como ligar a teoria à rotina e quando pedir ajuda.
+          </p>
+        </header>
+        <div className="student-gallery-controls">
+          <p id="student-gallery-help">Deslize para o lado ou use as setas para ver as fotos.</p>
+          <div className="student-gallery-arrows">
+            <button
+              type="button"
+              aria-label="Foto anterior"
+              aria-controls="student-photo-track"
+              disabled={activePhoto === 0}
+              onClick={() => goToPhoto(activePhoto - 1)}
+            >
+              <ChevronLeft aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              aria-label="Próxima foto"
+              aria-controls="student-photo-track"
+              disabled={activePhoto === photos.length - 1}
+              onClick={() => goToPhoto(activePhoto + 1)}
+            >
+              <ChevronRight aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+        <div
+          id="student-photo-track"
+          className="student-photo-track"
+          ref={trackRef}
+          role="region"
+          aria-label="Fotos reais com alunos e atividades no laboratório"
+          aria-roledescription="carrossel"
+          aria-describedby="student-gallery-help"
+          tabIndex={0}
+          onScroll={updateActivePhoto}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+              event.preventDefault();
+              goToPhoto(activePhoto + (event.key === "ArrowRight" ? 1 : -1));
+            } else if (event.key === "Home" || event.key === "End") {
+              event.preventDefault();
+              goToPhoto(event.key === "Home" ? 0 : photos.length - 1);
+            }
+          }}
+        >
+          {photos.map((photo, index) => (
+            <figure
+              key={photo.src}
+              className="student-photo-slide"
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`Foto ${index + 1} de ${photos.length}`}
+            >
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                width={photo.width}
+                height={photo.height}
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>{photo.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+        <div className="student-gallery-footer">
+          <span aria-live="polite" aria-atomic="true">
+            Foto {activePhoto + 1} de {photos.length}
+          </span>
+          <div className="student-gallery-dots" aria-label="Escolher foto">
+            {photos.map((photo, index) => (
+              <button
+                key={photo.src}
+                type="button"
+                aria-label={`Ver foto ${index + 1}`}
+                aria-current={activePhoto === index ? "true" : undefined}
+                aria-controls="student-photo-track"
+                onClick={() => goToPhoto(index)}
+              >
+                <span />
+              </button>
+            ))}
+          </div>
+        </div>
+        <p className="student-gallery-note">
+          Registros reais da formação no laboratório. O Guia é uma preparação teórica e não inclui
+          estágio ou aulas presenciais; a prática exige orientação e supervisão.
+        </p>
+      </div>
+    </section>
+  );
+}
 
 function CTA({
   label = siteConfig.ctaLabel,
@@ -255,7 +396,7 @@ export function GuideLanding() {
           <div className="container hero-grid">
             <div className="hero-copy">
               <div className="author-intro">
-                <img src={siteConfig.videoPoster} alt="Paulo Brandão" width="64" height="64" />
+                <img src={siteConfig.heroAuthorPhoto} alt="Paulo Brandão" width="64" height="64" />
                 <div>
                   <b>Paulo Brandão</b>
                   <span>Autor do Guia · Farmacêutico-Bioquímico</span>
@@ -285,13 +426,15 @@ export function GuideLanding() {
             </div>
             <div className="hero-visual">
               <figure className="author-portrait">
-                <img
-                  src={siteConfig.heroAuthorPhoto}
-                  alt="Paulo Brandão, autor do Guia"
-                  width="478"
-                  height="850"
-                  fetchPriority="high"
-                />
+                <div className="author-photo-frame">
+                  <img
+                    src={siteConfig.heroAuthorPhoto}
+                    alt="Paulo Brandão, autor do Guia"
+                    width="838"
+                    height="645"
+                    fetchPriority="high"
+                  />
+                </div>
                 <figcaption>
                   <b>Paulo Brandão</b>
                   <span>Autor do Guia · Responsável técnico do Santa Helena</span>
@@ -309,6 +452,8 @@ export function GuideLanding() {
             </div>
           </div>
         </section>
+
+        <StudentGallery />
 
         <section className="section doubts-section" aria-labelledby="doubts-title">
           <div className="container editorial-grid">
@@ -341,61 +486,6 @@ export function GuideLanding() {
                 Minha proposta é dar a você uma direção: o que revisar, o que observar e quais
                 dúvidas levar ao supervisor.
               </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="section students-section" aria-labelledby="students-title">
-          <div className="container">
-            <header className="section-heading">
-              <span className="section-label">ENSINO E ROTINA LABORATORIAL</span>
-              <h2 id="students-title">
-                O contato com estudantes
-                <br />
-                faz parte da minha trajetória.
-              </h2>
-              <p>
-                Minha atuação reúne laboratório, docência e palestras. Compartilho aqui alguns
-                registros dessa experiência.
-              </p>
-            </header>
-            <div className="student-gallery">
-              <figure>
-                <img
-                  src={siteConfig.laboratoryPhoto}
-                  alt="Paulo Brandão com um grupo de alunos em formatura"
-                  width="1280"
-                  height="1330"
-                  loading="lazy"
-                />
-                <figcaption>Com alunos, em um registro de formatura.</figcaption>
-              </figure>
-              <div className="student-gallery-side">
-                <figure className="practice-photo">
-                  <img
-                    src={siteConfig.studentActivityPhoto}
-                    alt="Alunos em atividade com tubos e materiais laboratoriais"
-                    width="1280"
-                    height="1341"
-                    loading="lazy"
-                  />
-                  <figcaption>Alunos em atividade com materiais da rotina laboratorial.</figcaption>
-                </figure>
-                <p>
-                  Essas imagens mostram atividades de formação e convivência com alunos. A
-                  experiência prática acontece em seu próprio contexto; o Guia é um material de
-                  preparação e revisão.
-                </p>
-                <a
-                  className="text-link"
-                  href={siteConfig.links.drPaulo}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Conheça minha trajetória
-                  <ExternalLink aria-hidden="true" />
-                </a>
-              </div>
             </div>
           </div>
         </section>
