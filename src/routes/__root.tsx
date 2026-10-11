@@ -89,6 +89,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content: siteConfig.productDescription,
       },
       { name: "theme-color", content: "#7f1d2d" },
+      { name: "author", content: "Paulo Brandão" },
       { property: "og:type", content: "website" },
       {
         property: "og:title",

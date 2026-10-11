@@ -3,8 +3,7 @@ import { GuideLanding } from "@/components/GuideLanding";
 import { siteConfig } from "@/lib/guide-config";
 
 const title = `${siteConfig.productName} | Laboratório Santa Helena`;
-const description =
-  "Vai começar ou começou recentemente o estágio em Análises Clínicas? Revise a rotina do laboratório, biossegurança e os principais setores com um guia digital prático.";
+const description = siteConfig.productDescription;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -16,7 +15,7 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: "https://primeiroestagio.vercel.app/" }],
   }),
   component: GuideLanding,
 });
