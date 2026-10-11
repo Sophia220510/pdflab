@@ -17,22 +17,10 @@ import { checkoutWithUtm, siteConfig, trackEvent } from "@/lib/guide-config";
 
 const previews = [
   {
-    page: 9,
-    title: "As três fases do exame",
-    src: "/images/guide-preview/p09-tres-fases-do-exame.jpg",
-    helps: "Onde entram solicitação, análise e laudo na jornada da amostra.",
-  },
-  {
-    page: 16,
-    title: "Checklist do primeiro dia",
-    src: "/images/guide-preview/p16-checklist-primeiro-dia.jpg",
-    helps: "O que observar na chegada, na orientação inicial e no fechamento do dia.",
-  },
-  {
-    page: 42,
-    title: "Plano de preparação em sete dias",
-    src: "/images/guide-preview/p42-plano-sete-dias.jpg",
-    helps: "Uma sequência de revisão de fluxo, biossegurança, amostras, setores e qualidade.",
+    page: 26,
+    title: "Tubos de coleta: mapa visual",
+    src: "/images/guide-preview/p26-tubos-previa.webp",
+    helps: "Cores, aditivos e o que conferir no rótulo, sempre seguindo o procedimento local.",
   },
 ] as const;
 
@@ -517,19 +505,14 @@ export function GuideLanding() {
         <section className="section preview-section" id="previas" aria-labelledby="preview-title">
           <div className="container">
             <header className="section-heading">
-              <span className="section-label">PÁGINAS REAIS DO PDF</span>
+              <span className="section-label">PRÉVIA DO GUIA · PÁGINA 26</span>
               <h2 id="preview-title">Veja o Guia por dentro.</h2>
               <p>
-                Três páginas para conhecer a organização do material. Toque ou clique para ampliar e
+                Um exemplo do conteúdo visual do material. Toque ou clique na página para ampliar e
                 ler.
               </p>
             </header>
-            <div
-              className="preview-grid compact-preview-grid"
-              tabIndex={0}
-              role="region"
-              aria-label="Prévias reais do Guia"
-            >
+            <div className="single-preview">
               {previews.map((preview) => (
                 <article className="preview-item" key={preview.page}>
                   <button
@@ -546,8 +529,8 @@ export function GuideLanding() {
                       src={preview.src}
                       alt={`Prévia real: ${preview.title}`}
                       loading="lazy"
-                      width="1340"
-                      height="1895"
+                      width="2067"
+                      height="2924"
                     />
                     <span>
                       <Maximize2 aria-hidden="true" />
@@ -751,8 +734,8 @@ export function GuideLanding() {
               <img
                 src={openPreview.src}
                 alt={`Página ${openPreview.page} do Guia: ${openPreview.title}`}
-                width="1340"
-                height="1895"
+                width="2067"
+                height="2924"
               />
             </div>
           </div>
