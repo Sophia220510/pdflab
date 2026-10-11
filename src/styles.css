@@ -416,27 +416,34 @@ summary:focus-visible,
 .students-section {
   padding-bottom: 46px;
 }
-.student-gallery-controls,
 .student-gallery-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  justify-content: center;
 }
-.student-gallery-controls {
-  margin-bottom: 15px;
+.students-section .section-heading {
+  max-width: 720px;
+  margin-inline: auto;
+  text-align: center;
 }
-.student-gallery-controls p {
-  max-width: 240px;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--muted);
+.students-section .section-heading h2 {
+  font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+}
+.students-section .section-heading p {
+  font-size: 0.96rem;
+}
+.student-carousel {
+  position: relative;
+  max-width: 1000px;
+  margin-inline: auto;
 }
 .student-gallery-arrows {
-  display: flex;
-  gap: 8px;
+  display: contents;
 }
 .student-gallery-arrows button {
+  position: absolute;
+  z-index: 2;
+  top: 38%;
   display: grid;
   place-items: center;
   width: 44px;
@@ -446,8 +453,14 @@ summary:focus-visible,
   background: #fff;
   color: var(--wine);
 }
+.student-gallery-arrows button:first-child {
+  left: -12px;
+}
+.student-gallery-arrows button:last-child {
+  right: -12px;
+}
 .student-gallery-arrows button:disabled {
-  opacity: 0.35;
+  visibility: hidden;
   cursor: default;
 }
 .student-gallery-arrows button:not(:disabled):hover {
@@ -461,33 +474,38 @@ summary:focus-visible,
   overflow-x: auto;
   overscroll-behavior-inline: contain;
   scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
-  scrollbar-color: #b7868e #f4efeb;
-  padding-bottom: 12px;
+  scrollbar-width: none;
+}
+.student-photo-track::-webkit-scrollbar {
+  display: none;
 }
 .student-photo-slide {
-  flex: 0 0 88%;
+  flex: 0 0 100%;
   min-width: 0;
   scroll-snap-align: start;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  overflow: hidden;
+  background: #fff;
 }
 .student-photo-slide:last-child {
-  margin-right: 12%;
+  margin-right: 0;
 }
 .student-photo-slide img {
   width: 100%;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 4 / 3;
   object-fit: contain;
   background: #eee8e2;
-  border-radius: 6px;
 }
 .student-photo-slide figcaption {
-  margin-top: 10px;
+  padding: 14px 16px;
+  min-height: 72px;
   font-size: 0.88rem;
   line-height: 1.5;
   color: var(--deep);
 }
 .student-gallery-footer {
-  margin-top: 4px;
+  margin-top: 8px;
   color: var(--muted);
   font-size: 0.8rem;
 }
@@ -497,26 +515,34 @@ summary:focus-visible,
 .student-gallery-dots button {
   display: grid;
   place-items: center;
-  width: 44px;
+  width: 28px;
   height: 44px;
   border: 0;
   background: transparent;
 }
 .student-gallery-dots span {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #b1a3a4;
 }
 .student-gallery-dots [aria-current="true"] span {
-  width: 22px;
-  border-radius: 8px;
   background: var(--wine);
 }
+.student-gallery-purchase {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+}
+.student-gallery-purchase .cta {
+  width: 100%;
+  max-width: 350px;
+}
 .student-gallery-note {
-  max-width: 780px;
-  margin-top: 10px;
-  font-size: 0.85rem;
+  max-width: 660px;
+  margin: 18px auto 0;
+  text-align: center;
+  font-size: 0.8rem;
   line-height: 1.65;
   color: var(--muted);
 }
@@ -1147,13 +1173,10 @@ summary:focus-visible,
     bottom: 100px;
   }
   .student-photo-slide {
-    flex-basis: 70%;
+    flex-basis: calc((100% - 32px) / 3);
   }
   .student-photo-slide:last-child {
-    margin-right: 30%;
-  }
-  .student-gallery-controls p {
-    max-width: none;
+    margin-right: 0;
   }
   .purpose-section {
     padding-block: 64px;

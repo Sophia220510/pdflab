@@ -107,17 +107,33 @@ const faqs = [
   ],
 ] as const;
 
-type CtaPosition = "hero" | "authority" | "offer" | "floating" | "final";
+type CtaPosition = "hero" | "students" | "authority" | "offer" | "floating" | "final";
 
 function StudentGallery() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [activePhoto, setActivePhoto] = useState(0);
+  const [visiblePhotos, setVisiblePhotos] = useState(1);
   const photos = siteConfig.studentPhotos;
+  const lastPhoto = photos.length - visiblePhotos;
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const updateLayout = () => {
+      const count = window.matchMedia("(min-width: 768px)").matches ? 3 : 1;
+      setVisiblePhotos(count);
+      setActivePhoto((current) => Math.min(current, photos.length - count));
+    };
+    updateLayout();
+    const observer = new ResizeObserver(updateLayout);
+    observer.observe(track);
+    return () => observer.disconnect();
+  }, [photos.length]);
 
   const goToPhoto = (index: number) => {
     const track = trackRef.current;
     if (!track) return;
-    const next = Math.max(0, Math.min(photos.length - 1, index));
+    const next = Math.max(0, Math.min(lastPhoto, index));
     const slide = track.children[next] as HTMLElement;
     track.scrollTo({
       left: slide.offsetLeft - (track.children[0] as HTMLElement).offsetLeft,
@@ -134,6 +150,7 @@ function StudentGallery() {
     let nearest = 0;
     let distance = Infinity;
     Array.from(track.children).forEach((child, index) => {
+      if (index > lastPhoto) return;
       const currentDistance = Math.abs(
         (child as HTMLElement).offsetLeft - start - track.scrollLeft,
       );
@@ -149,16 +166,17 @@ function StudentGallery() {
     <section className="section students-section" aria-labelledby="students-title">
       <div className="container">
         <header className="section-heading">
-          <span className="section-label">QUEM ORIENTA TAMBÉM CONHECE AS DÚVIDAS DO COMEÇO</span>
-          <h2 id="students-title">Ensinar faz parte da minha rotina no laboratório.</h2>
+          <span className="section-label">EXPERIÊNCIA REAL COM ESTUDANTES</span>
+          <h2 id="students-title">Quem ensina na rotina conhece as dúvidas do começo.</h2>
           <p>
-            Sou responsável técnico pelo Santa Helena e acompanho a rotina laboratorial e a
-            orientação de estudantes. Esse contato me ajuda a reconhecer as dúvidas de quem está
-            começando: o que observar, como ligar a teoria à rotina e quando pedir ajuda.
+            No Santa Helena, acompanho a rotina do laboratório e a orientação de estudantes. Levei
+            essa experiência para o Guia: uma direção para o que revisar, observar e perguntar.
           </p>
         </header>
-        <div className="student-gallery-controls">
-          <p id="student-gallery-help">Deslize para o lado ou use as setas para ver as fotos.</p>
+        <p id="student-gallery-help" className="sr-only">
+          Deslize para o lado ou use as setas para ver as fotos.
+        </p>
+        <div className="student-carousel">
           <div className="student-gallery-arrows">
             <button
               type="button"
@@ -173,59 +191,59 @@ function StudentGallery() {
               type="button"
               aria-label="Próxima foto"
               aria-controls="student-photo-track"
-              disabled={activePhoto === photos.length - 1}
+              disabled={activePhoto === lastPhoto}
               onClick={() => goToPhoto(activePhoto + 1)}
             >
               <ChevronRight aria-hidden="true" />
             </button>
           </div>
-        </div>
-        <div
-          id="student-photo-track"
-          className="student-photo-track"
-          ref={trackRef}
-          role="region"
-          aria-label="Fotos reais com alunos e atividades no laboratório"
-          aria-roledescription="carrossel"
-          aria-describedby="student-gallery-help"
-          tabIndex={0}
-          onScroll={updateActivePhoto}
-          onKeyDown={(event) => {
-            if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
-              event.preventDefault();
-              goToPhoto(activePhoto + (event.key === "ArrowRight" ? 1 : -1));
-            } else if (event.key === "Home" || event.key === "End") {
-              event.preventDefault();
-              goToPhoto(event.key === "Home" ? 0 : photos.length - 1);
-            }
-          }}
-        >
-          {photos.map((photo, index) => (
-            <figure
-              key={photo.src}
-              className="student-photo-slide"
-              role="group"
-              aria-roledescription="slide"
-              aria-label={`Foto ${index + 1} de ${photos.length}`}
-            >
-              <img
-                src={photo.src}
-                alt={photo.alt}
-                width={photo.width}
-                height={photo.height}
-                loading="lazy"
-                decoding="async"
-              />
-              <figcaption>{photo.caption}</figcaption>
-            </figure>
-          ))}
+          <div
+            id="student-photo-track"
+            className="student-photo-track"
+            ref={trackRef}
+            role="region"
+            aria-label="Fotos reais com alunos e atividades no laboratório"
+            aria-roledescription="carrossel"
+            aria-describedby="student-gallery-help"
+            tabIndex={0}
+            onScroll={updateActivePhoto}
+            onKeyDown={(event) => {
+              if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+                event.preventDefault();
+                goToPhoto(activePhoto + (event.key === "ArrowRight" ? 1 : -1));
+              } else if (event.key === "Home" || event.key === "End") {
+                event.preventDefault();
+                goToPhoto(event.key === "Home" ? 0 : lastPhoto);
+              }
+            }}
+          >
+            {photos.map((photo, index) => (
+              <figure
+                key={photo.src}
+                className="student-photo-slide"
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`Foto ${index + 1} de ${photos.length}`}
+              >
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  width={photo.width}
+                  height={photo.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <figcaption>{photo.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
         <div className="student-gallery-footer">
-          <span aria-live="polite" aria-atomic="true">
+          <span className="sr-only" aria-live="polite" aria-atomic="true">
             Foto {activePhoto + 1} de {photos.length}
           </span>
           <div className="student-gallery-dots" aria-label="Escolher foto">
-            {photos.map((photo, index) => (
+            {photos.slice(0, lastPhoto + 1).map((photo, index) => (
               <button
                 key={photo.src}
                 type="button"
@@ -238,6 +256,9 @@ function StudentGallery() {
               </button>
             ))}
           </div>
+        </div>
+        <div className="student-gallery-purchase">
+          <CTA position="students" label="Quero meu Guia por R$27" />
         </div>
         <p className="student-gallery-note">
           Registros reais da formação no laboratório. O Guia é uma preparação teórica e não inclui
@@ -323,7 +344,7 @@ export function GuideLanding() {
   useEffect(() => {
     const heroCta = document.querySelector("[data-cta-position='hero']");
     const controls = document.querySelectorAll(
-      ".video-media, [data-cta-position='offer'], [data-cta-position='final']",
+      ".video-media, [data-cta-position='students'], [data-cta-position='offer'], [data-cta-position='final']",
     );
     if (!heroCta) return;
     const update = () => {
