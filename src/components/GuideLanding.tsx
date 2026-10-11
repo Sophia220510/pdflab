@@ -159,14 +159,6 @@ function StudentGallery() {
             Como responsável técnico do Santa Helena, acompanho a rotina e a orientação de
             estudantes.
           </p>
-          <div className="authority-links">
-            <a href={siteConfig.links.drPaulo} target="_blank" rel="noreferrer">
-              Minha trajetória <ExternalLink aria-hidden="true" />
-            </a>
-            <a href={siteConfig.links.laboratory} target="_blank" rel="noreferrer">
-              Santa Helena · desde 1988 <ExternalLink aria-hidden="true" />
-            </a>
-          </div>
         </header>
         <p id="student-gallery-help" className="sr-only">
           Deslize com o dedo, arraste com o mouse ou use as setas para ver as fotos.
@@ -681,10 +673,6 @@ export function GuideLanding() {
       <footer className="site-footer" inert={!!openPreview}>
         <div className="container footer-main">
           <Brand />
-          <p>
-            Material educacional de preparação e revisão. Não substitui treinamento prático,
-            supervisão, POPs, avaliação de competência ou orientação do responsável técnico.
-          </p>
           <div className="footer-links">
             <a href={siteConfig.links.laboratory} target="_blank" rel="noreferrer">
               Site do laboratório
