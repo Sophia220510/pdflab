@@ -62,47 +62,8 @@ export const siteConfig = {
     refund: "",
     contact: "",
   },
-  analytics: { gaId: "", metaPixelId: "2057720801536799" },
+  metaPixelId: "2369590133808698",
 } as const;
-
-export type AnalyticsEvent = "page_view" | "cta_click" | "checkout_start" | "video_play";
-
-export function trackEvent(event: AnalyticsEvent, data: Record<string, unknown> = {}) {
-  if (typeof window === "undefined") return;
-  window.dispatchEvent(new CustomEvent("santahelena:analytics", { detail: { event, ...data } }));
-
-  // PageView and ViewContent are emitted by the bootstrap in __root.tsx, once per page load.
-  // Purchase must only be emitted by Kiwify after a confirmed transaction.
-  if (!siteConfig.analytics.metaPixelId || typeof window.fbq !== "function") return;
-  if (event === "cta_click") {
-    window.fbq("trackCustom", "GuideCtaClick", {
-      content_ids: [siteConfig.productContentId],
-      content_name: siteConfig.productName,
-      cta_position: data["position"],
-    });
-  } else if (event === "checkout_start") {
-    window.fbq("track", "InitiateCheckout", {
-      content_ids: [siteConfig.productContentId],
-      content_name: siteConfig.productName,
-      content_type: "product",
-      currency: "BRL",
-      value: siteConfig.productPriceNumber,
-      num_items: 1,
-      cta_position: data["position"],
-    });
-  } else if (event === "video_play") {
-    window.fbq("trackCustom", "GuideVideoPlay", {
-      content_ids: [siteConfig.productContentId],
-      content_name: siteConfig.productName,
-    });
-  }
-}
-
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
 
 export function checkoutWithUtm(
   search = typeof window === "undefined" ? "" : window.location.search,

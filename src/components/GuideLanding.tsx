@@ -13,7 +13,7 @@ import {
   Play,
   X,
 } from "lucide-react";
-import { checkoutWithUtm, siteConfig, trackEvent } from "@/lib/guide-config";
+import { checkoutWithUtm, siteConfig } from "@/lib/guide-config";
 
 const previews = [
   {
@@ -285,8 +285,6 @@ function CTA({
       return;
     }
     lastClickRef.current = now;
-    trackEvent("cta_click", { label, position });
-    trackEvent("checkout_start", { position });
   };
 
   return (
@@ -327,14 +325,9 @@ export function GuideLanding() {
   const [videoError, setVideoError] = useState(false);
   const [showFloatingBuy, setShowFloatingBuy] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const videoTrackedRef = useRef(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const previewTriggerRef = useRef<HTMLButtonElement | null>(null);
-
-  useEffect(() => {
-    trackEvent("page_view");
-  }, []);
 
   useEffect(() => {
     const heroCta = document.querySelector("[data-cta-position='hero']");
@@ -433,12 +426,6 @@ export function GuideLanding() {
                         preload="none"
                         poster={siteConfig.videoPoster}
                         aria-label="Mensagem de Paulo Brandão sobre o Guia"
-                        onPlay={() => {
-                          if (!videoTrackedRef.current) {
-                            videoTrackedRef.current = true;
-                            trackEvent("video_play");
-                          }
-                        }}
                       >
                         <source src={siteConfig.videoUrl} type="video/mp4" />
                         Seu navegador não consegue reproduzir este vídeo.
