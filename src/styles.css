@@ -475,6 +475,13 @@ summary:focus-visible,
   overscroll-behavior-inline: contain;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-x pan-y pinch-zoom;
+}
+.student-photo-track.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
 }
 .student-photo-track::-webkit-scrollbar {
   display: none;

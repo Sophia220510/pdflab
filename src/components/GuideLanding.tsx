@@ -111,6 +111,13 @@ type CtaPosition = "hero" | "students" | "authority" | "offer" | "floating" | "f
 
 function StudentGallery() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{
+    pointerId: number;
+    startX: number;
+    lastX: number;
+    startScroll: number;
+    startPhoto: number;
+  } | null>(null);
   const [activePhoto, setActivePhoto] = useState(0);
   const [visiblePhotos, setVisiblePhotos] = useState(1);
   const photos = siteConfig.studentPhotos;
@@ -162,6 +169,23 @@ function StudentGallery() {
     setActivePhoto(nearest);
   };
 
+  const finishDrag = (cancelled = false) => {
+    const track = trackRef.current;
+    const drag = dragRef.current;
+    if (!track || !drag) return;
+    dragRef.current = null;
+    const distance = drag.startX - drag.lastX;
+    const step =
+      (track.children[1] as HTMLElement).offsetLeft - (track.children[0] as HTMLElement).offsetLeft;
+    let next = Math.round(track.scrollLeft / step);
+    if (!cancelled && Math.abs(distance) > 40 && next === drag.startPhoto) {
+      next += Math.sign(distance);
+    }
+    track.classList.remove("is-dragging");
+    if (track.hasPointerCapture(drag.pointerId)) track.releasePointerCapture(drag.pointerId);
+    goToPhoto(next);
+  };
+
   return (
     <section className="section students-section" aria-labelledby="students-title">
       <div className="container">
@@ -174,7 +198,7 @@ function StudentGallery() {
           </p>
         </header>
         <p id="student-gallery-help" className="sr-only">
-          Deslize para o lado ou use as setas para ver as fotos.
+          Deslize com o dedo, arraste com o mouse ou use as setas para ver as fotos.
         </p>
         <div className="student-carousel">
           <div className="student-gallery-arrows">
@@ -207,6 +231,32 @@ function StudentGallery() {
             aria-describedby="student-gallery-help"
             tabIndex={0}
             onScroll={updateActivePhoto}
+            onPointerDown={(event) => {
+              // Touch keeps native horizontal swipe and vertical page scrolling.
+              if (event.pointerType !== "mouse" || event.button !== 0) return;
+              event.preventDefault();
+              const track = event.currentTarget;
+              track.focus({ preventScroll: true });
+              dragRef.current = {
+                pointerId: event.pointerId,
+                startX: event.clientX,
+                lastX: event.clientX,
+                startScroll: track.scrollLeft,
+                startPhoto: activePhoto,
+              };
+              track.classList.add("is-dragging");
+              track.setPointerCapture(event.pointerId);
+            }}
+            onPointerMove={(event) => {
+              const drag = dragRef.current;
+              if (!drag || drag.pointerId !== event.pointerId) return;
+              drag.lastX = event.clientX;
+              event.currentTarget.scrollLeft = drag.startScroll + drag.startX - event.clientX;
+            }}
+            onPointerUp={() => finishDrag()}
+            onPointerCancel={() => finishDrag(true)}
+            onLostPointerCapture={() => finishDrag(true)}
+            onDragStart={(event) => event.preventDefault()}
             onKeyDown={(event) => {
               if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
                 event.preventDefault();
@@ -232,6 +282,7 @@ function StudentGallery() {
                   height={photo.height}
                   loading="lazy"
                   decoding="async"
+                  draggable={false}
                 />
                 <figcaption>{photo.caption}</figcaption>
               </figure>
