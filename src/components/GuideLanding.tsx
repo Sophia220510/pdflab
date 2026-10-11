@@ -21,93 +21,55 @@ const previews = [
     title: "As três fases do exame",
     src: "/images/guide-preview/p09-tres-fases-do-exame.jpg",
     helps: "Onde entram solicitação, análise e laudo na jornada da amostra.",
-    use: "Consulte para reconhecer as etapas que o supervisor apresenta na rotina.",
   },
   {
     page: 16,
     title: "Checklist do primeiro dia",
     src: "/images/guide-preview/p16-checklist-primeiro-dia.jpg",
     helps: "O que observar na chegada, na orientação inicial e no fechamento do dia.",
-    use: "Leve como lembrete dos pontos que precisa confirmar com o supervisor.",
   },
   {
     page: 42,
     title: "Plano de preparação em sete dias",
     src: "/images/guide-preview/p42-plano-sete-dias.jpg",
     helps: "Uma sequência de revisão de fluxo, biossegurança, amostras, setores e qualidade.",
-    use: "Distribua sua revisão antes de começar ou durante as primeiras semanas.",
   },
 ] as const;
 
 const contents = [
-  [
-    "01",
-    "Rotina e primeiro dia",
-    "Jornada da amostra, três fases do exame, postura, supervisão e checklist do primeiro dia.",
-  ],
-  [
-    "02",
-    "Cuidados essenciais",
-    "Biossegurança, fase pré-analítica, identificação, tubos, interferentes e transporte de amostras.",
-  ],
-  [
-    "03",
-    "Setores e qualidade",
-    "Panorama dos principais setores, controles da qualidade, registros, sigilo e comunicação.",
-  ],
-  [
-    "04",
-    "Sua revisão organizada",
-    "Plano de preparação em sete dias, glossário, teste rápido e respostas comentadas.",
-  ],
+  "Rotina laboratorial e principais setores.",
+  "Biossegurança e fase pré-analítica.",
+  "Checklist do primeiro dia.",
+  "Plano de preparação em sete dias.",
+  "Glossário, teste e respostas comentadas.",
 ] as const;
 
 const faqs = [
   [
-    "Serve para quem ainda não começou?",
-    "Sim. Preparei o Guia para ajudar você a organizar o que revisar antes do primeiro dia e reconhecer melhor o ambiente que vai encontrar.",
+    "Para quem é e em que momento usar?",
+    "Para estudantes de Biomedicina, Farmácia, Ciências Biológicas e áreas relacionadas. Preparei o Guia para quem vai começar ou começou recentemente o estágio em Análises Clínicas. É material educacional: não autoriza técnicas nem substitui treinamento, supervisão e procedimentos da instituição.",
   ],
   [
-    "Serve para quem começou recentemente?",
-    "Sim. Você pode consultar o material nas primeiras semanas, retomar conceitos e anotar dúvidas para conversar com o supervisor.",
+    "É PDF ou curso em vídeo? Posso ler no celular?",
+    "É um Guia digital em PDF, com 47 páginas, edição 2026. Você pode ler e ampliar as páginas no celular, tablet ou computador. O vídeo desta página apresenta o material; a compra não inclui curso em vídeo ou aulas presenciais.",
   ],
   [
-    "Para quais estudantes é indicado?",
-    "Para estudantes de Biomedicina, Farmácia, Ciências Biológicas e áreas relacionadas que terão contato com Análises Clínicas, respeitando as atribuições e a grade de cada formação.",
+    "Como recebo e acesso?",
+    "A compra é feita pela Kiwify. Após a aprovação do pagamento, siga as instruções de acesso digital da plataforma. Use um e-mail válido e confira os dados cadastrados na compra.",
   ],
   [
-    "É PDF ou curso em vídeo?",
-    `O produto é um Guia em PDF, com ${siteConfig.productPages} páginas. O vídeo desta página é uma apresentação minha; a compra não inclui um curso em vídeo nem treinamento presencial.`,
-  ],
-  [
-    "Posso ler pelo celular?",
-    "Sim. Você pode ler o PDF no celular, tablet ou computador e ampliar as páginas no leitor de sua preferência.",
-  ],
-  [
-    "Como recebo o material?",
-    "A compra é feita pela Kiwify e o acesso ao material é digital após a aprovação do pagamento. Cadastre um e-mail válido e siga as instruções de acesso informadas pela plataforma.",
-  ],
-  [
-    `O que está incluído nos ${siteConfig.productPrice}?`,
-    "O Guia digital, com rotina laboratorial, checklist do primeiro dia, biossegurança, fase pré-analítica, panorama dos setores, plano de sete dias, glossário, teste e respostas comentadas.",
-  ],
-  [
-    "Os materiais complementares são opcionais?",
-    "Sim. Os complementos oferecidos no checkout são opcionais, cobrados à parte e não fazem parte do preço do Guia. Você pode comprar somente o Guia.",
+    "O que está incluído? Os complementos são opcionais?",
+    "Os R$27 incluem o Guia completo: rotina, setores, biossegurança, fase pré-analítica, checklist, plano de sete dias, glossário, teste e respostas comentadas. Complementos oferecidos no checkout são opcionais e pagos à parte. Você pode comprar somente o Guia.",
   ],
   [
     "Como falar com o suporte?",
     siteConfig.supportEmail
-      ? "Para dúvidas sobre o Guia, use o e-mail de suporte abaixo. Para questões relacionadas ao pagamento, consulte também o atendimento da Kiwify."
-      : "Você encontra os contatos do Laboratório Santa Helena no site oficial, no link abaixo. Para questões sobre pagamento ou acesso, consulte também o atendimento da Kiwify e tenha os dados da compra em mãos.",
-  ],
-  [
-    "O Guia substitui a orientação do laboratório?",
-    "Não. É material educacional de preparação e revisão. A execução de técnicas exige treinamento, autorização e supervisão. Os procedimentos e as orientações da instituição sempre têm prioridade.",
+      ? "Use o e-mail abaixo para dúvidas sobre o Guia. Para questões de pagamento ou acesso, consulte também o atendimento da Kiwify."
+      : "Consulte os contatos públicos do Laboratório Santa Helena no link abaixo. Para questões de pagamento ou acesso, procure também o atendimento da Kiwify com os dados da compra.",
   ],
 ] as const;
 
-type CtaPosition = "hero" | "students" | "authority" | "offer" | "floating" | "final";
+type CtaPosition = "hero" | "offer" | "floating";
 
 function StudentGallery() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -191,11 +153,20 @@ function StudentGallery() {
       <div className="container">
         <header className="section-heading">
           <span className="section-label">EXPERIÊNCIA REAL COM ESTUDANTES</span>
-          <h2 id="students-title">Quem ensina na rotina conhece as dúvidas do começo.</h2>
+          <h2 id="students-title">Ensinar faz parte da minha rotina.</h2>
           <p>
-            No Santa Helena, acompanho a rotina do laboratório e a orientação de estudantes. Levei
-            essa experiência para o Guia: uma direção para o que revisar, observar e perguntar.
+            Sou biólogo, farmacêutico-bioquímico e especialista em Análises Clínicas pelo TEAC/SBAC.
+            Como responsável técnico do Santa Helena, acompanho a rotina e a orientação de
+            estudantes.
           </p>
+          <div className="authority-links">
+            <a href={siteConfig.links.drPaulo} target="_blank" rel="noreferrer">
+              Minha trajetória <ExternalLink aria-hidden="true" />
+            </a>
+            <a href={siteConfig.links.laboratory} target="_blank" rel="noreferrer">
+              Santa Helena · desde 1988 <ExternalLink aria-hidden="true" />
+            </a>
+          </div>
         </header>
         <p id="student-gallery-help" className="sr-only">
           Deslize com o dedo, arraste com o mouse ou use as setas para ver as fotos.
@@ -308,13 +279,6 @@ function StudentGallery() {
             ))}
           </div>
         </div>
-        <div className="student-gallery-purchase">
-          <CTA position="students" label="Quero meu Guia por R$27" />
-        </div>
-        <p className="student-gallery-note">
-          Registros reais da formação no laboratório. O Guia é uma preparação teórica e não inclui
-          estágio ou aulas presenciais; a prática exige orientação e supervisão.
-        </p>
       </div>
     </section>
   );
@@ -394,9 +358,7 @@ export function GuideLanding() {
 
   useEffect(() => {
     const heroCta = document.querySelector("[data-cta-position='hero']");
-    const controls = document.querySelectorAll(
-      ".video-media, [data-cta-position='students'], [data-cta-position='offer'], [data-cta-position='final']",
-    );
+    const controls = document.querySelectorAll(".video-media, [data-cta-position='offer']");
     if (!heroCta) return;
     const update = () => {
       const heroPassed = heroCta.getBoundingClientRect().bottom < 0;
@@ -464,136 +426,118 @@ export function GuideLanding() {
       </header>
 
       <main id="conteudo" inert={!!openPreview}>
-        <section className="hero" aria-labelledby="hero-title">
-          <div className="container hero-grid">
-            <div className="hero-copy">
-              <div className="author-intro">
-                <img src={siteConfig.heroAuthorPhoto} alt="Paulo Brandão" width="64" height="64" />
-                <div>
-                  <b>Paulo Brandão</b>
-                  <span>Autor do Guia · Farmacêutico-Bioquímico</span>
-                </div>
-              </div>
+        <section className="hero compact-hero" aria-labelledby="hero-title">
+          <div className="container compact-hero-grid">
+            <div className="compact-hero-intro">
+              <p className="section-label">PAULO BRANDÃO · AUTOR DO GUIA</p>
               <h1 id="hero-title">
                 Seu estágio está começando.<em>Quero ajudar você a chegar mais preparado.</em>
               </h1>
               <p className="hero-lead">
-                Sou Paulo Brandão. Preparei este Guia para organizar sua revisão e ajudar você a
-                entender melhor a rotina do laboratório, antes de começar e nas primeiras semanas.
+                Preparei este Guia para organizar sua revisão e ajudar você a acompanhar a rotina do
+                laboratório — antes de começar ou nas primeiras semanas.
               </p>
-              <p className="hero-product-name">{siteConfig.productName}</p>
               <p className="hero-meta">
-                PDF digital · {siteConfig.productPages} páginas · edição {siteConfig.productEdition}
+                O produto é um Guia digital em PDF, não um curso em vídeo.
               </p>
+            </div>
+            <div className="hero-vsl">
+              {siteConfig.videoUrl && (
+                <div className="video-column">
+                  <div className="video-frame">
+                    <div className="video-media">
+                      <video
+                        ref={videoRef}
+                        controls
+                        playsInline
+                        preload="none"
+                        poster={siteConfig.videoPoster}
+                        aria-label="Mensagem de Paulo Brandão sobre o Guia"
+                        onPlay={() => {
+                          if (!videoTrackedRef.current) {
+                            videoTrackedRef.current = true;
+                            trackEvent("video_play");
+                          }
+                        }}
+                      >
+                        <source src={siteConfig.videoUrl} type="video/mp4" />
+                        Seu navegador não consegue reproduzir este vídeo.
+                      </video>
+                      {!videoStarted && (
+                        <button
+                          className="video-poster"
+                          type="button"
+                          aria-label="Assistir à mensagem de Paulo Brandão"
+                          onClick={() => {
+                            setVideoError(false);
+                            setVideoStarted(true);
+                            void videoRef.current?.play().catch(() => {
+                              setVideoStarted(false);
+                              setVideoError(true);
+                            });
+                          }}
+                        >
+                          <img
+                            src={siteConfig.videoPoster}
+                            alt="Paulo Brandão no laboratório"
+                            width="478"
+                            height="850"
+                            fetchPriority="high"
+                          />
+                          <span className="video-overlay" aria-hidden="true">
+                            <span className="play-button">
+                              <Play />
+                            </span>
+                            <b>Assistir à minha mensagem</b>
+                          </span>
+                        </button>
+                      )}
+                    </div>
+                    <p className="video-caption">Paulo Brandão · Autor do Guia</p>
+                    {videoError && (
+                      <p className="video-error" role="status">
+                        Não foi possível iniciar o vídeo. Toque para tentar novamente ou continue
+                        conhecendo o Guia.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="compact-hero-purchase">
+              <p className="hero-product-name">{siteConfig.productName}</p>
               <div className="hero-purchase">
                 <strong>{siteConfig.productPrice}</strong>
                 <span>pagamento único</span>
               </div>
               <CTA position="hero" />
               <p className="purchase-note">
-                Leia no celular, tablet ou computador.
+                PDF · 47 páginas · edição 2026
                 <br />
-                Acesso digital após a aprovação do pagamento.
+                Leia no celular, tablet ou computador. Acesso digital após aprovação do pagamento.
               </p>
-            </div>
-            <div className="hero-visual">
-              <figure className="author-portrait">
-                <div className="author-photo-frame">
-                  <img
-                    src={siteConfig.heroAuthorPhoto}
-                    alt="Paulo Brandão, autor do Guia"
-                    width="838"
-                    height="645"
-                    fetchPriority="high"
-                  />
-                </div>
-                <figcaption>
-                  <b>Paulo Brandão</b>
-                  <span>Autor do Guia · Responsável técnico do Santa Helena</span>
-                </figcaption>
-              </figure>
-              <div className="hero-book">
-                <img
-                  src={siteConfig.coverImage}
-                  alt="Capa da edição atual do Guia em PDF"
-                  width="1340"
-                  height="1895"
-                />
-                <span>Seu material de preparação e consulta</span>
-              </div>
             </div>
           </div>
         </section>
 
         <StudentGallery />
 
-        <section className="section doubts-section" aria-labelledby="doubts-title">
-          <div className="container editorial-grid">
-            <header>
-              <span className="section-label">PARA QUEM ESTÁ COMEÇANDO</span>
-              <h2 id="doubts-title">
-                A teoria você já viu.
-                <br />A rotina ainda é novidade.
-              </h2>
-            </header>
-            <div className="editorial-copy">
-              <p>
-                É comum conhecer os termos da faculdade e ainda ter dúvidas sobre como eles aparecem
-                no laboratório. Talvez você não saiba o que revisar, não reconheça alguns materiais
-                ou fique em dúvida sobre o que perguntar.
-              </p>
-              <ul className="simple-list">
-                <li>
-                  <Check aria-hidden="true" />O que acontece entre o pedido do exame e o laudo?
-                </li>
-                <li>
-                  <Check aria-hidden="true" />O que preciso observar nos setores?
-                </li>
-                <li>
-                  <Check aria-hidden="true" />
-                  Quais cuidados devo revisar antes de acompanhar a rotina?
-                </li>
-              </ul>
-              <p className="editorial-emphasis">
-                Minha proposta é dar a você uma direção: o que revisar, o que observar e quais
-                dúvidas levar ao supervisor.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="purpose-section" aria-labelledby="purpose-title">
-          <div className="container purpose-inner">
-            <span className="section-label">POR QUE PREPAREI ESTE GUIA</span>
-            <h2 id="purpose-title">
-              Para você ter um ponto de partida — e um material para voltar quando precisar.
-            </h2>
-            <p>
-              Reuni os fundamentos da rotina laboratorial em uma sequência de leitura e consulta.
-              Você pode estudar antes de começar, retomar um assunto nos primeiros dias e organizar
-              sua revisão ao longo das primeiras semanas.
-            </p>
-            <p className="purpose-signoff">
-              A ideia é chegar para aprender, com mais clareza sobre o que observar e quando pedir
-              orientação.
-            </p>
-          </div>
-        </section>
-
         <section className="section preview-section" id="previas" aria-labelledby="preview-title">
           <div className="container">
             <header className="section-heading">
               <span className="section-label">PÁGINAS REAIS DO PDF</span>
-              <h2 id="preview-title">
-                Veja como organizei
-                <br />o material por dentro.
-              </h2>
+              <h2 id="preview-title">Veja o Guia por dentro.</h2>
               <p>
-                Selecione uma página para ampliar. Aqui estão três exemplos do conteúdo que você
-                recebe.
+                Três páginas para conhecer a organização do material. Toque ou clique para ampliar e
+                ler.
               </p>
             </header>
-            <div className="preview-grid">
+            <div
+              className="preview-grid compact-preview-grid"
+              tabIndex={0}
+              role="region"
+              aria-label="Prévias reais do Guia"
+            >
               {previews.map((preview) => (
                 <article className="preview-item" key={preview.page}>
                   <button
@@ -620,12 +564,7 @@ export function GuideLanding() {
                   </button>
                   <div className="preview-explanation">
                     <h3>{preview.title}</h3>
-                    <p>
-                      <b>O que esclarece:</b> {preview.helps}
-                    </p>
-                    <p>
-                      <b>Como usar:</b> {preview.use}
-                    </p>
+                    <p>{preview.helps}</p>
                   </div>
                 </article>
               ))}
@@ -634,140 +573,37 @@ export function GuideLanding() {
         </section>
 
         <section className="section contents-section" aria-labelledby="contents-title">
-          <div className="container editorial-grid">
+          <div className="container compact-contents">
             <header>
               <span className="section-label">O QUE VOCÊ RECEBE</span>
-              <h2 id="contents-title">
-                Um Guia organizado
-                <br />
-                para estudar e consultar.
-              </h2>
+              <h2 id="contents-title">Uma direção para estudar e consultar.</h2>
               <p>
-                {siteConfig.productPages} páginas em PDF, com leitura no celular, tablet ou
-                computador.
+                Reuni os fundamentos para você reconhecer o fluxo do laboratório, entender termos e
+                setores e levar dúvidas mais claras ao supervisor.
               </p>
-              <a className="text-link" href="#oferta">
-                Ver a oferta
-                <ArrowRight aria-hidden="true" />
-              </a>
+              <p>
+                Você pode seguir a leitura antes do primeiro dia ou retomar os assuntos conforme
+                eles aparecem nas primeiras semanas. O checklist e o plano de sete dias ajudam a
+                organizar essa preparação.
+              </p>
             </header>
             <div>
-              <div className="contents-list">
-                {contents.map(([number, title, text]) => (
-                  <article key={number}>
-                    <span aria-hidden="true">{number}</span>
-                    <div>
-                      <h3>{title}</h3>
-                      <p>{text}</p>
-                    </div>
-                  </article>
+              <ul className="simple-list compact-content-list">
+                {contents.map((item) => (
+                  <li key={item}>
+                    <Check aria-hidden="true" />
+                    {item}
+                  </li>
                 ))}
-              </div>
+              </ul>
               <aside className="complements-note">
                 <Plus aria-hidden="true" />
                 <p>
-                  <b>Complementos opcionais</b>Após escolher o Guia, você também poderá adicionar
-                  materiais complementares de revisão por um valor especial. Eles são cobrados à
-                  parte e não estão incluídos no preço do Guia.
+                  Complementos no checkout são opcionais e pagos à parte. O Guia de R$27 pode ser
+                  comprado sozinho.
                 </p>
               </aside>
             </div>
-          </div>
-        </section>
-
-        <section className="section about-section" aria-labelledby="about-title">
-          <div className="container about-grid">
-            <div className="about-copy">
-              <span className="section-label">SOBRE MIM</span>
-              <h2 id="about-title">
-                Sou Paulo Brandão.
-                <br />
-                Criei este Guia para acompanhar sua preparação.
-              </h2>
-              <p>
-                Sou biólogo e farmacêutico-bioquímico, com título de Especialista em Análises
-                Clínicas pelo TEAC/SBAC. Minha trajetória inclui rotina laboratorial, docência,
-                palestras e contato com estudantes.
-              </p>
-              <p>
-                Sou responsável técnico do Laboratório Santa Helena, que atua desde 1988 em Análises
-                Clínicas e Medicina Ocupacional. Essa experiência dá contexto ao conteúdo que reuni
-                aqui.
-              </p>
-              <div className="authority-links">
-                <a href={siteConfig.links.drPaulo} target="_blank" rel="noreferrer">
-                  Minha trajetória profissional
-                  <ExternalLink aria-hidden="true" />
-                </a>
-                <a href={siteConfig.links.laboratory} target="_blank" rel="noreferrer">
-                  Conheça o Santa Helena
-                  <ExternalLink aria-hidden="true" />
-                </a>
-              </div>
-              <CTA position="authority" />
-            </div>
-            {siteConfig.videoUrl && (
-              <div className="video-column">
-                <p>Também deixei uma mensagem para você.</p>
-                <div className="video-frame">
-                  <div className="video-media">
-                    <video
-                      ref={videoRef}
-                      controls
-                      playsInline
-                      preload="none"
-                      poster={siteConfig.videoPoster}
-                      aria-label="Mensagem de Paulo Brandão sobre o Guia"
-                      onPlay={() => {
-                        if (!videoTrackedRef.current) {
-                          videoTrackedRef.current = true;
-                          trackEvent("video_play");
-                        }
-                      }}
-                    >
-                      <source src={siteConfig.videoUrl} type="video/mp4" />
-                      Seu navegador não consegue reproduzir este vídeo.
-                    </video>
-                    {!videoStarted && (
-                      <button
-                        className="video-poster"
-                        type="button"
-                        aria-label="Assistir à mensagem de Paulo Brandão"
-                        onClick={() => {
-                          setVideoError(false);
-                          setVideoStarted(true);
-                          void videoRef.current?.play().catch(() => {
-                            setVideoStarted(false);
-                            setVideoError(true);
-                          });
-                        }}
-                      >
-                        <img
-                          src={siteConfig.videoPoster}
-                          alt="Paulo Brandão no laboratório"
-                          width="478"
-                          height="850"
-                          loading="lazy"
-                        />
-                        <span className="video-overlay" aria-hidden="true">
-                          <span className="play-button">
-                            <Play />
-                          </span>
-                          <b>Assistir à minha mensagem</b>
-                        </span>
-                      </button>
-                    )}
-                  </div>
-                  <p className="video-caption">Paulo Brandão · Autor do Guia</p>
-                  {videoError && (
-                    <p className="video-error" role="status">
-                      Não foi possível iniciar o vídeo. Toque para tentar novamente ou continue
-                      conhecendo o Guia.
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
           </div>
         </section>
 
@@ -784,39 +620,21 @@ export function GuideLanding() {
               <figcaption>PDF · edição {siteConfig.productEdition}</figcaption>
             </figure>
             <div className="offer-copy">
-              <span className="section-label">SEU GUIA DE PREPARAÇÃO E REVISÃO</span>
+              <span className="section-label">SEU MATERIAL DE PREPARAÇÃO E CONSULTA</span>
               <h2 id="offer-title">{siteConfig.productName}</h2>
               <p>
-                Preparei um material para você revisar antes de começar e consultar no início do
-                estágio. Tudo em um único PDF.
+                Um PDF de 47 páginas para estudar no seu ritmo, antes ou durante o início do
+                estágio. Tenha os fundamentos reunidos em um material que você pode voltar a
+                consultar.
               </p>
-              <ul className="simple-list">
-                <li>
-                  <Check aria-hidden="true" />
-                  {siteConfig.productPages} páginas: rotina, biossegurança, fase pré-analítica e
-                  setores.
-                </li>
-                <li>
-                  <Check aria-hidden="true" />
-                  Checklist, plano de sete dias, glossário e revisão final.
-                </li>
-                <li>
-                  <Check aria-hidden="true" />
-                  Leitura no celular, tablet ou computador.
-                </li>
-              </ul>
               <div className="offer-price">
                 <strong>{siteConfig.productPrice}</strong>
                 <span>pagamento único</span>
               </div>
               <CTA position="offer" />
               <p className="checkout-note">
-                Compra pela Kiwify. Acesso digital após a aprovação do pagamento, seguindo as
+                Compra pela Kiwify. Acesso digital após aprovação do pagamento, seguindo as
                 instruções da plataforma.
-              </p>
-              <p className="offer-limits">
-                Material teórico. Na prática, siga o treinamento, a supervisão e os procedimentos do
-                seu laboratório.
               </p>
             </div>
           </div>
@@ -826,7 +644,7 @@ export function GuideLanding() {
           <div className="container faq-wrap">
             <header className="section-heading">
               <span className="section-label">ANTES DE COMPRAR</span>
-              <h2 id="faq-title">Talvez você queira saber.</h2>
+              <h2 id="faq-title">Dúvidas rápidas.</h2>
             </header>
             <div className="faq-list">
               {faqs.map(([question, answer]) => (
@@ -856,17 +674,6 @@ export function GuideLanding() {
                 </details>
               ))}
             </div>
-          </div>
-        </section>
-
-        <section className="final-section" aria-labelledby="final-title">
-          <div className="container final-inner">
-            <div>
-              <span className="section-label">ANTES OU DURANTE AS PRIMEIRAS SEMANAS</span>
-              <h2 id="final-title">Quero ajudar você a aproveitar melhor esse começo.</h2>
-              <p>{siteConfig.productPrice} · pagamento único · Guia digital em PDF</p>
-            </div>
-            <CTA position="final" />
           </div>
         </section>
       </main>
