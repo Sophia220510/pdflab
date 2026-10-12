@@ -59,7 +59,8 @@ export const siteConfig = {
     instagram: "https://www.instagram.com/laboratoriosantahelena81/",
     privacy: "",
     terms: "",
-    refund: "",
+    refund:
+      "https://ajuda.kiwify.com.br/pt-br/article/como-faco-para-pedir-o-reembolso-de-um-produto-que-comprei-1kfom3h/",
     contact: "",
   },
   metaPixelId: "2369590133808698",

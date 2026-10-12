@@ -954,6 +954,56 @@ summary:focus-visible,
   font-size: 0.85rem;
   line-height: 1.6;
 }
+.offer-guarantee {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 22px;
+  padding: 18px;
+  border: 1px solid #ddc7c1;
+  border-radius: 12px;
+  background: #faf3ed;
+  color: #3b2027;
+}
+.guarantee-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #e4ceca;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--wine);
+}
+.guarantee-icon svg {
+  width: 26px;
+  height: 26px;
+  stroke-width: 1.7;
+}
+.offer-guarantee b {
+  font-size: 1rem;
+}
+.offer-copy .offer-guarantee p {
+  margin: 7px 0 9px;
+  color: #604951;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.offer-guarantee a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  color: var(--wine);
+  font-size: 0.82rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.offer-guarantee a svg {
+  width: 13px;
+  height: 13px;
+}
 .offer-copy .offer-limits {
   padding-top: 18px;
   border-top: 1px solid #75545c;

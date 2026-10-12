@@ -11,6 +11,7 @@ import {
   Minus,
   Plus,
   Play,
+  ShieldCheck,
   X,
 } from "lucide-react";
 import { checkoutWithUtm, siteConfig } from "@/lib/guide-config";
@@ -598,6 +599,21 @@ export function GuideLanding() {
                 Compra pela Kiwify. Acesso digital após aprovação do pagamento, seguindo as
                 instruções da plataforma.
               </p>
+              <aside className="offer-guarantee" aria-label="Garantia e reembolso">
+                <span className="guarantee-icon">
+                  <ShieldCheck aria-hidden="true" />
+                </span>
+                <div>
+                  <b>7 dias de garantia</b>
+                  <p>
+                    Se não ficar satisfeito com o Guia, você pode solicitar reembolso em até 7 dias
+                    corridos após a compra, pelo fluxo da Kiwify.
+                  </p>
+                  <a href={siteConfig.links.refund} target="_blank" rel="noreferrer">
+                    Como solicitar na Kiwify <ExternalLink aria-hidden="true" />
+                  </a>
+                </div>
+              </aside>
             </div>
           </div>
         </section>
